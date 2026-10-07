@@ -6,6 +6,7 @@
 <title>N.A.N.A. — Portal Junta Directiva</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root {
   --primary: #1e4b6e;
@@ -212,8 +213,14 @@ textarea.acta-input { resize: vertical; min-height: 100px; }
       <button class="btn btn-sm btn-accent" onclick="openExportModal()">
         <i class="fa-solid fa-file-export"></i> Exportar Acta
       </button>
+      <button class="btn btn-sm" id="gtasks-btn" onclick="sendToGoogleTasks()" style="background:#4285f4;color:white;display:none">
+        <i class="fa-brands fa-google"></i> Enviar a Google Tasks
+      </button>
       <button class="btn btn-sm btn-outline" onclick="toggleFullscreen()">
         <i class="fa-solid fa-expand"></i>
+      </button>
+      <button class="btn btn-sm btn-outline" onclick="openSettings()" title="Configuración">
+        <i class="fa-solid fa-gear"></i>
       </button>
       <button class="btn btn-sm btn-primary" onclick="goHome()">
         <i class="fa-solid fa-arrow-left"></i> Inicio
@@ -325,15 +332,44 @@ textarea.acta-input { resize: vertical; min-height: 100px; }
   </div>
 </div>
 
+<!-- ============ MODAL: Configuración Google Tasks ============ -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <h2><i class="fa-solid fa-gear" style="color:var(--primary)"></i> Configuración</h2>
+    <p class="modal-sub">Para enviar tareas directamente a <strong>Google Tasks</strong>, necesitas un Client ID de Google. Es gratuito y se configura en 5 minutos.</p>
+
+    <div class="hint-box" style="margin-bottom:1.5rem">
+      <strong>¿Cómo obtener el Client ID?</strong><br>
+      1. Ve a <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a><br>
+      2. Crea un proyecto → <strong>APIs y Servicios → Credenciales</strong><br>
+      3. Crea una <strong>ID de cliente OAuth 2.0</strong> (tipo: Aplicación Web)<br>
+      4. Añade <code>https://nana-asoc.github.io</code> como origen autorizado<br>
+      5. Activa la <strong>Google Tasks API</strong> en "Biblioteca"<br>
+      6. Copia el Client ID y pégalo aquí abajo.
+    </div>
+
+    <div class="form-group">
+      <label>Google Client ID</label>
+      <input type="text" id="settings-client-id" placeholder="xxxxxxxx.apps.googleusercontent.com">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeSettings()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveSettings()"><i class="fa-solid fa-check"></i> Guardar y Conectar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // =====================================================
-//  N.A.N.A. Portal — v3
+//  N.A.N.A. Portal — v3.1 (Google Tasks)
 // =====================================================
 
 let activeMeetingId = null;
 let editingId = null;
 let todos = [];
 let actaVisible = true;
+let gAccessToken = null;
 
 // ─── Persistence helpers ───────────────────────────
 const LS = {
@@ -648,16 +684,194 @@ function toggleFullscreen() {
 
 // ─── KEYBOARD ────────────────────────────────────
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeModal(); closeExport();
-  }
+  if (e.key === 'Escape') { closeModal(); closeExport(); closeSettings(); }
 });
-
 document.getElementById('meeting-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 document.getElementById('export-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeExport(); });
+document.getElementById('settings-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSettings(); });
+
+// ─── SETTINGS ─────────────────────────────────────
+function openSettings() {
+  const saved = LS.raw('nana_google_client_id', '');
+  document.getElementById('settings-client-id').value = saved;
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
+function saveSettings() {
+  const clientId = document.getElementById('settings-client-id').value.trim();
+  if (!clientId) { alert('Introduce el Client ID.'); return; }
+  LS.setRaw('nana_google_client_id', clientId);
+  closeSettings();
+  initGoogleAuth(clientId);
+}
+
+// ─── GOOGLE AUTH ──────────────────────────────────
+function initGoogleAuth(clientId) {
+  if (!clientId || typeof google === 'undefined') return;
+  try {
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: 'https://www.googleapis.com/auth/tasks',
+      callback: (response) => {
+        if (response.access_token) {
+          gAccessToken = response.access_token;
+          document.getElementById('gtasks-btn').style.display = 'inline-flex';
+          alert('¡Conectado con Google! Ahora puedes enviar las tareas a Google Tasks.');
+        }
+      }
+    });
+    // Store client for later use
+    window._gTasksClient = client;
+    // If already authenticated before (token in session), show button directly
+    if (gAccessToken) document.getElementById('gtasks-btn').style.display = 'inline-flex';
+  } catch(e) {
+    console.error('Google auth init error:', e);
+  }
+}
+
+function connectGoogle() {
+  const clientId = LS.raw('nana_google_client_id', '');
+  if (!clientId) { openSettings(); return; }
+  if (!window._gTasksClient) { initGoogleAuth(clientId); return; }
+  window._gTasksClient.requestAccessToken();
+}
+
+async function sendToGoogleTasks() {
+  if (!gAccessToken) {
+    connectGoogle();
+    return;
+  }
+  const pendingTodos = todos.filter(t => !t.done);
+  if (!pendingTodos.length) { alert('No hay tareas pendientes para enviar.'); return; }
+
+  const meetings = getMeetings();
+  const m = meetings.find(x => x.id === activeMeetingId) || {};
+  const listTitle = 'NANA - ' + (m.name || 'Reunión');
+
+  try {
+    // 1. Create task list
+    const listRes = await fetch('https://tasks.googleapis.com/tasks/v1/users/@me/lists', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + gAccessToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: listTitle })
+    });
+    const list = await listRes.json();
+    if (!list.id) throw new Error('No se pudo crear la lista.');
+
+    // 2. Create each pending task
+    let created = 0;
+    for (const t of pendingTodos) {
+      const res = await fetch('https://tasks.googleapis.com/tasks/v1/lists/' + list.id + '/tasks', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + gAccessToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: t.text, notes: 'De la reunión: ' + (m.name || '') })
+      });
+      if ((await res.json()).id) created++;
+    }
+
+    alert('✅ ' + created + ' tarea(s) enviadas a Google Tasks en la lista "' + listTitle + '".');
+  } catch(e) {
+    console.error(e);
+    alert('Error al conectar con Google Tasks. El token puede haber expirado. Vuelve a conectar desde Configuración.');
+    gAccessToken = null;
+    document.getElementById('gtasks-btn').style.display = 'none';
+  }
+}
+
+// ─── EXPORT (mejorado) ────────────────────────────
+function buildActaText() {
+  const meetings = getMeetings();
+  const m = meetings.find(x => x.id === activeMeetingId) || {};
+  const date    = LS.raw('nana_' + activeMeetingId + '_date', m.date || '');
+  const atts    = LS.raw('nana_' + activeMeetingId + '_attendees', '');
+  const notes   = LS.raw('nana_' + activeMeetingId + '_notes', '');
+  const next    = LS.raw('nana_' + activeMeetingId + '_next', '');
+  const todosArr = LS.get('nana_' + activeMeetingId + '_todos', []);
+  const pending  = todosArr.filter(t => !t.done);
+  const done     = todosArr.filter(t => t.done);
+
+  let text = '═══════════════════════════════════════\n';
+  text += '   ACTA DE REUNIÓN — JUNTA N.A.N.A.\n';
+  text += '═══════════════════════════════════════\n\n';
+  text += 'Reunión:    ' + (m.name || '—') + '\n';
+  text += 'Fecha:      ' + formatDate(date) + '\n';
+  text += 'Generado:   ' + new Date().toLocaleString('es-ES') + '\n';
+
+  if (atts) {
+    text += '\n── ASISTENTES ──────────────────────────\n';
+    text += atts + '\n';
+  }
+
+  text += '\n── APUNTES Y DECISIONES ───────────────\n';
+  text += (notes || '(Sin apuntes registrados)') + '\n';
+
+  if (pending.length) {
+    text += '\n── TAREAS PENDIENTES ───────────────────\n';
+    pending.forEach(t => { text += '  [ ] ' + t.text + '\n'; });
+  }
+  if (done.length) {
+    text += '\n── TAREAS COMPLETADAS ──────────────────\n';
+    done.forEach(t => { text += '  [✓] ' + t.text + '\n'; });
+  }
+
+  if (next) {
+    text += '\n── PRÓXIMA REUNIÓN ─────────────────────\n';
+    text += next + '\n';
+  }
+
+  text += '\n═══════════════════════════════════════\n';
+  text += '  Total tareas: ' + todosArr.length + ' (' + done.length + ' hechas, ' + pending.length + ' pendientes)\n';
+  text += '═══════════════════════════════════════\n';
+  return text;
+}
+
+function openExportModal() {
+  document.getElementById('export-content').textContent = buildActaText();
+  document.getElementById('export-modal').classList.add('open');
+}
+function closeExport() { document.getElementById('export-modal').classList.remove('open'); }
+
+function copyActa() {
+  navigator.clipboard.writeText(document.getElementById('export-content').textContent)
+    .then(() => alert('¡Copiado! Pégalo en un email o documento Word/Google Docs.'))
+    .catch(() => alert('Selecciona el texto y cópialo con Ctrl+C.'));
+}
+
+function printActa() {
+  const text = buildActaText();
+  const m = getMeetings().find(x => x.id === activeMeetingId) || {};
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html lang="es"><head>
+    <meta charset="UTF-8"><title>Acta — ${m.name || 'N.A.N.A.'}</title>
+    <style>
+      body { font-family: Georgia, serif; max-width: 700px; margin: 3rem auto; color: #2c3e50; line-height: 1.7; }
+      h1 { color: #1e4b6e; border-bottom: 3px solid #e67e22; padding-bottom: 0.5rem; }
+      pre { white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 13px; background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #e67e22; }
+      @media print { body { margin: 1cm; } }
+    </style></head><body>
+    <h1>Acta de Reunión &mdash; N.A.N.A.</h1>
+    <pre>${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+    </body></html>`);
+  win.document.close();
+  setTimeout(() => win.print(), 500);
+}
+
+function toggleFullscreen() {
+  const el = document.getElementById('meeting-view');
+  if (!document.fullscreenElement) el.requestFullscreen().catch(() => {});
+  else document.exitFullscreen();
+}
 
 // ─── INIT ─────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', renderHome);
+window.addEventListener('DOMContentLoaded', () => {
+  renderHome();
+  const savedClientId = LS.raw('nana_google_client_id', '');
+  if (savedClientId) {
+    // Delay to let Google script load
+    setTimeout(() => initGoogleAuth(savedClientId), 1500);
+  }
+});
 </script>
 </body>
 </html>
+
