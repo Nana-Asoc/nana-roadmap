@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -983,11 +983,10 @@
                 const li = document.createElement('li');
                 if (todo.completed) li.classList.add('completed');
                 
-                li.innerHTML = 
-                    <input type="checkbox"  onchange="toggleTodo()">
-                    <span></span>
-                    <i class="fa-solid fa-trash todo-del" onclick="deleteTodo()"></i>
-                ;
+                const checkbox = todo.completed ? "checked" : "";
+                li.innerHTML = "<input type='checkbox' " + checkbox + " onchange='toggleTodo(" + index + ")'>" +
+                               "<span>" + todo.text + "</span>" +
+                               "<i class='fa-solid fa-trash todo-del' onclick='deleteTodo(" + index + ")'></i>";
                 list.appendChild(li);
             });
         }
