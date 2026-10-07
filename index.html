@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junta Directiva N.A.N.A. - Roadmap Estratégico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Paleta ajustada: Profesional pero más cálida (Asociación Social) */
+            --primary: #1e4b6e;       /* Azul marino profundo */
+            --primary-light: #306b99;
+            --secondary: #e67e22;     /* Naranja cálido (energía, infancia, cercanía) */
+            --secondary-light: #fdf2e9;
+            --accent: #27ae60;        /* Verde esmeralda para hitos positivos */
+            --bg-color: #f8fafc;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --note-bg: #fffdf5;       /* Amarillo cálido para notas */
+            --white: #ffffff;
+            --transition-speed: 0.5s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #presentation-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 4rem 8rem;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--white);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.02);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .slide.previous {
+            transform: translateX(-50px);
+        }
+
+        .slide-content-wrapper {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .slide-cover .slide-content-wrapper {
+            grid-template-columns: 1fr;
+            text-align: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 6px;
+            background-color: var(--secondary);
+            border-radius: 3px;
+        }
+
+        .subtitle {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .points-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .points-list li {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: #fdfdfd;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-light);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .points-list li i {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 2px;
+        }
+
+        .points-list li strong {
+            color: var(--primary);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .notepad-container {
+            background-color: var(--note-bg);
+            border-left: 8px solid var(--secondary);
+            border-radius: 0 16px 16px 0;
+            padding: 2.5rem;
+            height: 100%;
+            min-height: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .notepad-container::before {
+            content: '\f249';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: rgba(230, 126, 34, 0.15);
+        }
+
+        .notepad-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px dashed rgba(230, 126, 34, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .editable-notes {
+            flex-grow: 1;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            outline: none;
+            overflow-y: auto;
+        }
+
+        .editable-notes[contenteditable]:empty:before {
+            content: attr(data-placeholder);
+            color: #a3a3a3;
+            font-style: italic;
+        }
+
+        .editable-notes ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .editable-notes li {
+            margin-bottom: 0.5rem;
+        }
+
+        #navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: var(--white);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4rem;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background-color: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .nav-btn:disabled {
+            border-color: #cbd5e1;
+            color: #cbd5e1;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            margin: 0 3rem;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 0%;
+            transition: width var(--transition-speed) ease;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Fullscreen button */
+        #fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            color: var(--primary);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #fullscreen-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .bg-shape-1 {
+            position: absolute;
+            top: -10%;
+            right: -5%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary-light) 0%, rgba(255,255,255,0) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-shape-2 {
+            position: absolute;
+            bottom: -15%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(30, 75, 110, 0.05) 0%, rgba(255,255,255,0) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .highlight {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="fullscreen-btn" onclick="toggleFullScreen()" title="Pantalla Completa">
+        <i class="fa-solid fa-expand"></i>
+    </button>
+
+    <div id="presentation-container">
+        
+        <!-- Slide 1: Portada -->
+        <div class="slide slide-cover active" id="slide-1">
+            <div class="bg-shape-1"></div>
+            <div class="bg-shape-2"></div>
+            <div class="slide-content-wrapper" style="position: relative; z-index: 1;">
+                <div>
+                    <h1>Junta Directiva <span style="color: var(--secondary);">N.A.N.A.</span></h1>
+                    <p class="subtitle">Planificación Estratégica, Bases Legales y Roadmap 2026-2027</p>
+                    <div style="width: 120px; height: 8px; background-color: var(--secondary); margin: 2rem auto; border-radius: 4px;"></div>
+                    <p style="color: var(--text-main); font-size: 1.3rem; font-weight: 500;">Preparación Operativa y Lanzamiento</p>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 1rem;"><i class="fa-regular fa-calendar"></i> Octubre 2026</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Estado Legal -->
+        <div class="slide" id="slide-2">
+            <div class="bg-shape-1"></div>
+            <div class="slide-content-wrapper">
+                <div class="content-left" style="position: relative; z-index: 1;">
+                    <h2>Estado Legal y Burocracia</h2>
+                    <p class="subtitle">La base jurídica para poder operar y recibir subvenciones.</p>
+                    
+                    <ul class="points-list">
+                        <li>
+                            <i class="fa-solid fa-file-signature"></i>
+                            <div>
+                                <strong>Resolución Generalitat (Registro):</strong><br> Estatutos presentados. Estamos a la espera de la inscripción definitiva para tener personalidad jurídica plena.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-id-card"></i>
+                            <div>
+                                <strong>NIF Definitivo y Exenciones:</strong><br> Trámite en Hacienda (AEAT) tras la resolución. Evaluar exención de IVA para actividades sociales.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div>
+                                <strong>Certificado Digital (FNMT):</strong><br> Indispensable para firma de convenios, solicitud de espacios públicos y subvenciones.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-building-columns"></i>
+                            <div>
+                                <strong>Banca Ética / Cuenta Operativa:</strong><br> Apertura de cuenta a nombre de la asociación para cuotas y donaciones (Triodos, Fiare o similar).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="content-right" style="position: relative; z-index: 1;">
+                    <div class="notepad-container">
+                        <div class="notepad-header">
+                            <i class="fa-solid fa-pen-to-square"></i> Plan de Acción y Responsables
+                        </div>
+                        <div class="editable-notes" contenteditable="true">
+                            <ul>
+                                <li>Llamar al Departament de Justícia para urgir estado de estatutos: <b>[Nombre Responsable]</b></li>
+                                <li><b>Gestoría/Asesoría:</b> ¿Contratamos una gestoría pro-bono o especializada en Tercer Sector para presentar el modelo 036?</li>
+                                <li><b>Seguros Obligatorios:</b> Pedir presupuesto de Seguro de Responsabilidad Civil (imprescindible antes de organizar eventos con menores).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Proyecto Estrella -->
+        <div class="slide" id="slide-3">
+            <div class="bg-shape-2"></div>
+            <div class="slide-content-wrapper">
+                <div class="content-left" style="position: relative; z-index: 1;">
+                    <h2>Casal de Verano Inclusivo 2027</h2>
+                    <p class="subtitle">Nuestro proyecto fundacional (Julio y Agosto 2027).</p>
+                    
+                    <ul class="points-list">
+                        <li>
+                            <i class="fa-solid fa-file-contract"></i>
+                            <div>
+                                <strong>Dossier Técnico / Pedagógico:</strong><br> Documento formal detallando justificación, metodologías y <span class="highlight">ratios especializados (1:1 o 1:2)</span> para necesidades específicas.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-landmark"></i>
+                            <div>
+                                <strong>Alianzas Institucionales:</strong><br> Presentación en Ajuntament (Regidoria d'Educació i Drets Socials). Fecha límite: Diciembre 2026.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-school"></i>
+                            <div>
+                                <strong>Cesión de Espacios:</strong><br> Búsqueda de colegio público o centro cívico con accesibilidad universal (rampas, lavabos adaptados, espacios de calma).
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-users"></i>
+                            <div>
+                                <strong>Contratación de Profesionales:</strong><br> Monitores con formación específica (TEA, TDAH, movilidad reducida, educación especial).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="content-right" style="position: relative; z-index: 1;">
+                    <div class="notepad-container">
+                        <div class="notepad-header">
+                            <i class="fa-solid fa-pen-to-square"></i> Acuerdos Proyecto Casal
+                        </div>
+                        <div class="editable-notes" contenteditable="true">
+                            <ul>
+                                <li><b>Financiación:</b> Identificar convocatorias de ayudas de la Diputació y Fundos privados (ej. Fundación "la Caixa") que abren en Enero/Febrero.</li>
+                                <li><b>Capacidad máxima:</b> Definir límite de plazas para el año 1 para asegurar calidad.</li>
+                                <li><b>Networking:</b> Contactar con otras AMPAs y asociaciones locales para hacer red y derivación de familias.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Ecosistema Digital -->
+        <div class="slide" id="slide-4">
+            <div class="bg-shape-1"></div>
+            <div class="slide-content-wrapper">
+                <div class="content-left" style="position: relative; z-index: 1;">
+                    <h2>Ecosistema Digital y Comunicación</h2>
+                    <p class="subtitle">Nuestra ventana al mundo y punto de encuentro (Web + Foro).</p>
+                    
+                    <ul class="points-list">
+                        <li>
+                            <i class="fa-solid fa-globe"></i>
+                            <div>
+                                <strong>Landing Page MVP:</strong><br> Web sencilla de presentación con formulario de interés para captar necesidades reales de las familias.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-comments"></i>
+                            <div>
+                                <strong>Sistema de Comunidad (Foro):</strong><br> Espacio seguro (Login requerido) con roles de usuario, para crear red de apoyo mutuo entre familias socias.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            <div>
+                                <strong>Privacidad y RGPD:</strong><br> Crítico: Al tratar datos de menores y de salud, requerimos políticas de privacidad estrictas y consentimientos explícitos.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="content-right" style="position: relative; z-index: 1;">
+                    <div class="notepad-container">
+                        <div class="notepad-header">
+                            <i class="fa-solid fa-pen-to-square"></i> Tareas Web y Comunidad
+                        </div>
+                        <div class="editable-notes" contenteditable="true">
+                            <b>Estructura propuesta para el Foro Privado:</b>
+                            <ul>
+                                <li>Café de Padres (Apoyo mutuo / Desahogo)</li>
+                                <li>Burocracia y Derechos (Becas NEE, discapacidad)</li>
+                                <li>Casal 2027 (Organización, voluntarios)</li>
+                                <li>Terapias y Recomendaciones locales</li>
+                            </ul>
+                            <br>
+                            <b>Tarea técnica:</b> Comprar dominio oficial y vincularlo al hosting gratuito (GitHub Pages).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Socios y Cuotas -->
+        <div class="slide" id="slide-5">
+            <div class="bg-shape-2"></div>
+            <div class="slide-content-wrapper">
+                <div class="content-left" style="position: relative; z-index: 1;">
+                    <h2>Estrategia de Socios y Viabilidad</h2>
+                    <p class="subtitle">Sostenibilidad económica y crecimiento de la base social.</p>
+                    
+                    <ul class="points-list">
+                        <li>
+                            <i class="fa-solid fa-hand-holding-heart"></i>
+                            <div>
+                                <strong>Modelo de Simpatizante (Gratis):</strong><br> Suscripción a newsletter. Ayuda a hacer "volumen" y demostrar representatividad ante las instituciones.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-star"></i>
+                            <div>
+                                <strong>Socio de Pleno Derecho (Cuota):</strong><br> Derecho a voto en asamblea, acceso total al foro privado, y prioridad en inscripción de actividades (Casal).
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-building-ngo"></i>
+                            <div>
+                                <strong>Socios Colaboradores (Empresas):</strong><br> Comercios locales que donan material, espacios o patrocinio económico a cambio de RSC (Responsabilidad Social Corporativa).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="content-right" style="position: relative; z-index: 1;">
+                    <div class="notepad-container">
+                        <div class="notepad-header">
+                            <i class="fa-solid fa-pen-to-square"></i> Decisiones Asamblea
+                        </div>
+                        <div class="editable-notes" contenteditable="true">
+                            <div style="text-align: center; margin-bottom: 1.5rem; background: #fff; padding: 1rem; border-radius: 8px;">
+                                <span style="font-size: 1.1rem; color: var(--primary);"><b>Propuesta de Cuota Anual:</b></span><br>
+                                <span style="font-size: 2.5rem; color: var(--secondary); font-weight: 800;">30€ - 50€ / año</span>
+                                <p style="font-size: 0.9rem; color: var(--text-muted);">*A debatir y votar hoy.</p>
+                            </div>
+                            <ul>
+                                <li>¿Ofreceremos tarifa reducida para familias monoparentales o en riesgo de exclusión?</li>
+                                <li>Diseñar campaña de captación para lanzar en <b>Noviembre</b>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Plan de Acción -->
+        <div class="slide" id="slide-6">
+            <div class="bg-shape-1"></div>
+            <div class="slide-content-wrapper">
+                <div class="content-left" style="position: relative; z-index: 1;">
+                    <h2>Próximos Pasos Inmediatos</h2>
+                    <p class="subtitle">Cronograma operativo para las próximas semanas.</p>
+                    
+                    <ul class="points-list">
+                        <li>
+                            <i class="fa-solid fa-bolt" style="color: var(--secondary);"></i>
+                            <div>
+                                <strong style="color: var(--secondary);">Esta semana:</strong><br>
+                                - Validar formulario inicial de necesidades.<br>
+                                - Cerrar la redacción del Dossier del Casal.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-calendar-week"></i>
+                            <div>
+                                <strong>En 15 días:</strong><br>
+                                - Publicación de la Landing Page.<br>
+                                - Confirmar estado de la cuenta bancaria y NIF.
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-bullseye" style="color: var(--accent);"></i>
+                            <div>
+                                <strong style="color: var(--accent);">Hito Principal (Noviembre):</strong><br>
+                                - Presentación formal del dossier en el Ayuntamiento.<br>
+                                - Lanzamiento de campaña de captación de socios.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="content-right" style="position: relative; z-index: 1;">
+                    <div class="notepad-container">
+                        <div class="notepad-header">
+                            <i class="fa-solid fa-pen-to-square"></i> Resumen de Acuerdos de Hoy
+                        </div>
+                        <div class="editable-notes" contenteditable="true" data-placeholder="Anotar quién hace qué para la próxima reunión...">
+                            <b>Delegación de tareas:</b><br>
+                            - Trámites legales y banco: <br>
+                            - Reunión Ayuntamiento: <br>
+                            - Web y RRSS: <br>
+                            <br>
+                            <i>Fecha de la próxima reunión de seguimiento:</i> <b>[DD/MM/AAAA]</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation Bar -->
+    <div id="navigation-bar">
+        <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>
+            <i class="fa-solid fa-arrow-left"></i> Anterior
+        </button>
+        
+        <div class="progress-container">
+            <div class="slide-counter">Diapositiva <span id="current-count">1</span> de <span id="total-count">6</span></div>
+            <div id="progress-bar"></div>
+        </div>
+
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">
+            Siguiente <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const currentCountSpan = document.getElementById('current-count');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-count').innerText = totalSlides;
+
+        function updateUI() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'previous');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('previous');
+                }
+            });
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+
+            const progress = ((currentSlide) / (totalSlides - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+            currentCountSpan.innerText = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateUI();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateUI();
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+                fullscreenBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                }
+            }
+        }
+
+        // Initialize UI
+        updateUI();
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if(document.activeElement.hasAttribute('contenteditable')) {
+                return;
+            }
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+        
+        // Listen for fullscreen change to update button icon correctly if user presses ESC
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+            }
+        });
+    </script>
+</body>
+</html>
