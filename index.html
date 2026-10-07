@@ -1,1023 +1,739 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Junta Directiva N.A.N.A. - Roadmap Estratégico</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            /* Paleta ajustada: Profesional pero más cálida (Asociación Social) */
-            --primary: #1e4b6e;       /* Azul marino profundo */
-            --primary-light: #306b99;
-            --secondary: #e67e22;     /* Naranja cálido (energía, infancia, cercanía) */
-            --secondary-light: #fdf2e9;
-            --accent: #27ae60;        /* Verde esmeralda para hitos positivos */
-            --bg-color: #f8fafc;
-            --text-main: #2c3e50;
-            --text-muted: #7f8c8d;
-            --note-bg: #fffdf5;       /* Amarillo cálido para notas */
-            --white: #ffffff;
-            --transition-speed: 0.5s;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N.A.N.A. - Portal Junta Directiva</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --primary: #1e4b6e;
+  --primary-light: #306b99;
+  --secondary: #e67e22;
+  --secondary-light: #fdf2e9;
+  --accent: #27ae60;
+  --danger: #e74c3c;
+  --bg: #f0f4f8;
+  --white: #ffffff;
+  --text: #2c3e50;
+  --muted: #7f8c8d;
+  --border: #dce3ea;
+  --note-bg: #fffdf5;
+  --speed: 0.4s;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+/* ===== VIEWS ===== */
+.view { display: none; }
+.view.active { display: block; }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
+/* ===== HOME ===== */
+#home { min-height: 100vh; }
 
-        #presentation-container {
-            position: relative;
-            width: 100%;
-            height: calc(100vh - 80px);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.home-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  padding: 3rem 4rem 4rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.home-header::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 0; right: 0;
+  height: 120px;
+  background: var(--bg);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.home-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: -1px; }
+.home-header h1 span { color: var(--secondary); }
+.home-header p { font-size: 1.1rem; opacity: 0.8; margin-top: 0.5rem; }
 
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 4rem 8rem;
-            opacity: 0;
-            transform: translateX(50px);
-            transition: opacity var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background-color: var(--white);
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.02);
-        }
+.home-body { padding: 2rem 4rem 4rem; max-width: 1200px; margin: 0 auto; }
 
-        .slide.active {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-            z-index: 10;
-        }
+.home-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; }
+.home-top h2 { font-size: 1.6rem; color: var(--primary); }
 
-        .slide.previous {
-            transform: translateX(-50px);
-        }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.25s ease; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(30,75,110,0.25); }
+.btn-secondary { background: var(--secondary); color: white; }
+.btn-secondary:hover { background: #d67118; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(230,126,34,0.25); }
+.btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
+.btn-outline:hover { background: var(--primary); color: white; }
+.btn-danger { background: var(--danger); color: white; font-size: 0.85rem; padding: 8px 14px; }
+.btn-danger:hover { background: #c0392b; }
+.btn-sm { font-size: 0.85rem; padding: 8px 16px; }
 
-        .slide-content-wrapper {
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
+.meetings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
 
-        .slide-cover .slide-content-wrapper {
-            grid-template-columns: 1fr;
-            text-align: center;
-            align-items: center;
-            height: 100%;
-        }
+.meeting-card {
+  background: white; border-radius: 16px; padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.meeting-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.meeting-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.meeting-date-badge {
+  background: var(--secondary-light); color: var(--secondary);
+  font-weight: 700; font-size: 0.9rem; padding: 5px 12px; border-radius: 20px;
+}
+.meeting-card h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 0.5rem; }
+.meeting-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.5; }
+.meeting-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.meeting-meta { font-size: 0.85rem; color: var(--muted); }
+.tag { display: inline-block; background: #e8f4fd; color: var(--primary); font-size: 0.78rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; margin-right: 4px; }
 
-        h1 {
-            font-size: 4.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            line-height: 1.1;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
+.empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+.empty-state i { font-size: 4rem; margin-bottom: 1rem; opacity: 0.3; display: block; }
+.empty-state p { font-size: 1.1rem; }
 
-        h2 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 2rem;
-            line-height: 1.2;
-            position: relative;
-            display: inline-block;
-        }
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal { background: white; border-radius: 20px; padding: 2.5rem; width: 500px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s ease; }
+.modal-overlay.open .modal { transform: scale(1); }
+.modal h2 { color: var(--primary); margin-bottom: 1.5rem; }
+.form-group { margin-bottom: 1.2rem; }
+.form-group label { display: block; font-weight: 600; color: var(--primary); margin-bottom: 6px; font-size: 0.95rem; }
+.form-group input, .form-group textarea {
+  width: 100%; padding: 12px; border: 2px solid var(--border);
+  border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 1rem;
+  transition: border-color 0.2s; outline: none;
+}
+.form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+.form-group textarea { resize: vertical; min-height: 90px; }
+.modal-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
 
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 80px;
-            height: 6px;
-            background-color: var(--secondary);
-            border-radius: 3px;
-        }
+/* ===== PRESENTATION VIEW ===== */
+#presentation { height: 100vh; display: none; flex-direction: column; overflow: hidden; }
+#presentation.active { display: flex; }
 
-        .subtitle {
-            font-size: 1.6rem;
-            font-weight: 400;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
+.pres-header {
+  background: white; padding: 0.8rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06); z-index: 50; flex-shrink: 0;
+}
+.pres-header-title { font-weight: 700; color: var(--primary); }
+.pres-header-date { font-size: 0.85rem; color: var(--muted); }
+.pres-header-actions { display: flex; gap: 0.8rem; align-items: center; }
 
-        .points-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
+.pres-body { display: flex; flex: 1; overflow: hidden; }
 
-        .points-list li {
-            font-size: 1.15rem;
-            line-height: 1.6;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            background: #fdfdfd;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-light);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-        }
+/* Slides area */
+.slides-area { flex: 1; position: relative; overflow: hidden; }
+.slide {
+  position: absolute; inset: 0;
+  padding: 3rem 5rem;
+  opacity: 0; transform: translateX(40px);
+  transition: opacity var(--speed) ease, transform var(--speed) ease;
+  pointer-events: none;
+  display: flex; flex-direction: column; justify-content: center;
+  background: white;
+}
+.slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 10; }
+.slide.previous { transform: translateX(-40px); }
+.slide.slide-cover { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; text-align: center; align-items: center; }
+.slide.slide-cover h1 { color: white; font-size: 3.5rem; }
+.slide.slide-cover .subtitle { color: rgba(255,255,255,0.8); font-size: 1.3rem; }
+.slide.slide-cover .cover-date { color: var(--secondary); font-size: 1.2rem; font-weight: 600; margin-top: 1rem; }
 
-        .points-list li i {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-top: 2px;
-        }
+.slide-inner { max-width: 1100px; width: 100%; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+h2.slide-title { font-size: 2.2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; line-height: 1.2; }
+h2.slide-title::after { content: ''; display: block; width: 70px; height: 5px; background: var(--secondary); border-radius: 3px; margin-top: 10px; }
+.slide-subtitle { font-size: 1rem; color: var(--muted); margin-bottom: 1.5rem; }
 
-        .points-list li strong {
-            color: var(--primary);
-            font-weight: 600;
-            display: block;
-            margin-bottom: 0.2rem;
-        }
+.points-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.points-list li {
+  font-size: 1rem; display: flex; align-items: flex-start; gap: 1rem;
+  background: var(--bg); padding: 0.9rem; border-radius: 8px;
+  border-left: 4px solid var(--primary-light);
+}
+.points-list li i { color: var(--primary); font-size: 1.2rem; margin-top: 2px; flex-shrink: 0; }
+.points-list li strong { color: var(--primary); font-weight: 600; display: block; }
 
-        .notepad-container {
-            background-color: var(--note-bg);
-            border-left: 8px solid var(--secondary);
-            border-radius: 0 16px 16px 0;
-            padding: 2.5rem;
-            height: 100%;
-            min-height: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+/* Right notepad */
+.slide-notepad { background: var(--note-bg); border-left: 6px solid var(--secondary); border-radius: 0 14px 14px 0; padding: 1.5rem; display: flex; flex-direction: column; min-height: 350px; }
+.notepad-label { font-size: 0.8rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px dashed rgba(230,126,34,0.3); padding-bottom: 0.5rem; margin-bottom: 1rem; }
+.editable-note {
+  flex: 1; outline: none; font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem; line-height: 1.7; color: var(--text);
+  overflow-y: auto; min-height: 200px;
+}
+.editable-note:empty::before { content: attr(data-placeholder); color: #bbb; font-style: italic; }
 
-        .notepad-container::before {
-            content: '\f249';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 2rem;
-            color: rgba(230, 126, 34, 0.15);
-        }
+/* Side acta panel */
+.acta-panel {
+  width: 340px; flex-shrink: 0;
+  background: white; border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.acta-panel.collapsed { width: 0; border: none; overflow: hidden; }
+.acta-header { padding: 1.2rem 1.5rem; background: var(--primary); color: white; font-weight: 700; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.acta-header span { font-size: 1rem; }
+.acta-toggle-icon { cursor: pointer; }
+.acta-body { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.acta-section-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 0.5rem; }
+.acta-textarea {
+  width: 100%; border: 2px solid var(--border); border-radius: 8px;
+  padding: 10px; font-family: 'Poppins'; font-size: 0.9rem;
+  resize: vertical; min-height: 120px; outline: none;
+}
+.acta-textarea:focus { border-color: var(--primary); }
 
-        .notepad-header {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px dashed rgba(230, 126, 34, 0.3);
-            padding-bottom: 0.5rem;
-        }
+/* Todo list */
+.todo-input-row { display: flex; gap: 8px; }
+.todo-input-row input { flex: 1; border: 2px solid var(--border); border-radius: 8px; padding: 8px 12px; font-family: 'Poppins'; font-size: 0.9rem; outline: none; }
+.todo-input-row input:focus { border-color: var(--primary); }
+.todo-input-row button { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 1.1rem; }
+#todo-list { list-style: none; margin-top: 0.8rem; display: flex; flex-direction: column; gap: 6px; }
+#todo-list li { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+#todo-list li.done span { text-decoration: line-through; color: var(--muted); }
+#todo-list li span { flex: 1; font-size: 0.9rem; }
+#todo-list li input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+.todo-del { color: var(--danger); cursor: pointer; font-size: 0.85rem; }
 
-        .editable-notes {
-            flex-grow: 1;
-            font-size: 1.05rem;
-            line-height: 1.7;
-            color: var(--text-main);
-            outline: none;
-            overflow-y: auto;
-        }
+/* Nav bar */
+.pres-nav {
+  background: white; border-top: 1px solid var(--border);
+  padding: 0.8rem 2rem; display: flex; align-items: center;
+  justify-content: space-between; flex-shrink: 0;
+}
+.pres-nav .nav-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 20px; border-radius: 50px;
+  border: 2px solid var(--primary); background: white; color: var(--primary);
+  font-family: 'Poppins'; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s ease;
+}
+.pres-nav .nav-btn:hover:not(:disabled) { background: var(--primary); color: white; }
+.pres-nav .nav-btn:disabled { border-color: var(--border); color: var(--border); cursor: not-allowed; }
+.pres-nav .progress-track { flex: 1; margin: 0 2rem; height: 6px; background: var(--border); border-radius: 3px; position: relative; overflow: hidden; }
+.pres-nav .progress-fill { height: 100%; background: var(--secondary); border-radius: 3px; transition: width var(--speed) ease; }
+.slide-counter { font-size: 0.85rem; font-weight: 600; color: var(--muted); position: absolute; top: -22px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
 
-        .editable-notes[contenteditable]:empty:before {
-            content: attr(data-placeholder);
-            color: #a3a3a3;
-            font-style: italic;
-        }
+/* Acta history in home */
+.acta-history { background: white; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 2rem; }
+.acta-history h3 { color: var(--primary); margin-bottom: 1rem; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
+.acta-entry { padding: 1rem; border-radius: 10px; background: var(--bg); margin-bottom: 0.8rem; border-left: 4px solid var(--secondary); }
+.acta-entry h4 { color: var(--primary); font-size: 1rem; margin-bottom: 0.3rem; }
+.acta-entry p { font-size: 0.88rem; color: var(--muted); white-space: pre-wrap; }
 
-        .editable-notes ul {
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .editable-notes li {
-            margin-bottom: 0.5rem;
-        }
-
-        #navigation-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            background-color: var(--white);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 4rem;
-            z-index: 100;
-        }
-
-        .nav-btn {
-            background-color: var(--white);
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .nav-btn:hover:not(:disabled) {
-            background-color: var(--primary);
-            color: var(--white);
-        }
-
-        .nav-btn:disabled {
-            border-color: #cbd5e1;
-            color: #cbd5e1;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        .progress-container {
-            flex-grow: 1;
-            margin: 0 3rem;
-            height: 8px;
-            background-color: #e2e8f0;
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        #progress-bar {
-            height: 100%;
-            background-color: var(--secondary);
-            width: 0%;
-            transition: width var(--transition-speed) ease;
-        }
-
-        .slide-counter {
-            position: absolute;
-            top: -28px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-
-        /* Fullscreen button */
-        #fullscreen-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            color: var(--primary);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 200;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #fullscreen-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .bg-shape-1 {
-            position: absolute;
-            top: -10%;
-            right: -5%;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--secondary-light) 0%, rgba(255,255,255,0) 100%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .bg-shape-2 {
-            position: absolute;
-            bottom: -15%;
-            left: -10%;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, rgba(30, 75, 110, 0.05) 0%, rgba(255,255,255,0) 100%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .highlight {
-            color: var(--secondary);
-            font-weight: 600;
-        }
-        @media (max-width: 992px) {
-            body {
-                overflow-y: auto;
-                height: auto;
-                background-color: var(--bg-color);
-            }
-            #presentation-container {
-                height: auto;
-                display: block;
-                padding: 1rem;
-            }
-            .slide {
-                position: relative;
-                opacity: 1;
-                transform: none !important;
-                pointer-events: auto;
-                padding: 2rem 1.5rem;
-                height: auto;
-                margin-bottom: 1.5rem;
-                border-radius: 16px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-                display: block;
-            }
-            .slide-content-wrapper {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            h1 { font-size: 2.2rem; }
-            h2 { font-size: 1.8rem; }
-            .subtitle { font-size: 1.1rem; }
-            .points-list li {
-                font-size: 1rem;
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .notepad-container {
-                border-left: none;
-                border-top: 6px solid var(--secondary);
-                border-radius: 16px;
-                min-height: auto;
-                padding: 1.5rem;
-            }
-            #navigation-bar, #fullscreen-btn, .bg-shape-1, .bg-shape-2 { 
-                display: none; 
-            }
-        }
-
-        /* Meeting Panel CSS */
-        #panel-toggle-btn {
-            position: fixed;
-            top: 20px;
-            right: 80px;
-            background: var(--secondary);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            z-index: 200;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Poppins', sans-serif;
-        }
-        #panel-toggle-btn:hover {
-            background: #d67118;
-            transform: scale(1.05);
-        }
-        #meeting-panel {
-            position: fixed;
-            top: 0;
-            right: -450px;
-            width: 400px;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
-            z-index: 300;
-            transition: right 0.4s ease;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-        #meeting-panel.open {
-            right: 0;
-        }
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--bg-color);
-            padding-bottom: 1rem;
-        }
-        .panel-header h3 {
-            color: var(--primary);
-            font-size: 1.5rem;
-        }
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-        .form-group input[type="date"], .form-group textarea, .form-group input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-        /* ToDo List */
-        #todo-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
-        }
-        #todo-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--bg-color);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-        #todo-list li.completed span {
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-        #todo-list li span {
-            flex-grow: 1;
-        }
-        .todo-del {
-            color: #e74c3c;
-            cursor: pointer;
-        }
-        #add-todo-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 5px;
-            width: 100%;
-            font-weight: 600;
-        }
-        @media (max-width: 992px) {
-            #panel-toggle-btn { right: 20px; top: 80px; }
-            #meeting-panel { width: 100%; right: -100%; }
-        }
-    </style>
-
+/* Mobile */
+@media (max-width: 900px) {
+  .home-header { padding: 2rem; }
+  .home-header h1 { font-size: 2rem; }
+  .home-body { padding: 1.5rem; }
+  .home-top { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .acta-panel { width: 100%; border-left: none; border-top: 1px solid var(--border); max-height: 350px; }
+  .pres-body { flex-direction: column; }
+  .slide { padding: 2rem 1.5rem; }
+  .slide-inner { grid-template-columns: 1fr; }
+  .pres-header { padding: 0.8rem 1rem; }
+}
+</style>
 </head>
 <body>
 
-    <button id="fullscreen-btn" onclick="toggleFullScreen()" title="Pantalla Completa">
+<!-- ============ HOME VIEW ============ -->
+<div id="home" class="view active">
+  <div class="home-header">
+    <h1>Junta Directiva <span>N.A.N.A.</span></h1>
+    <p>Portal de Reuniones y Seguimiento Estratégico 2026-2027</p>
+  </div>
+
+  <div class="home-body">
+    <div class="home-top">
+      <h2><i class="fa-solid fa-calendar-days"></i> Reuniones registradas</h2>
+      <button class="btn btn-secondary" onclick="openNewMeetingModal()">
+        <i class="fa-solid fa-plus"></i> Nueva Reunión
+      </button>
+    </div>
+
+    <div class="meetings-grid" id="meetings-grid">
+      <!-- Cards generated by JS -->
+    </div>
+
+    <div id="acta-history-section" class="acta-history" style="display:none;">
+      <h3><i class="fa-solid fa-scroll"></i> Historial de Actas</h3>
+      <div id="acta-history-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PRESENTATION VIEW ============ -->
+<div id="presentation" class="view">
+
+  <div class="pres-header">
+    <div>
+      <div class="pres-header-title" id="pres-title">Reunión N.A.N.A.</div>
+      <div class="pres-header-date" id="pres-date"></div>
+    </div>
+    <div class="pres-header-actions">
+      <button class="btn btn-sm btn-outline" onclick="toggleActaPanel()">
+        <i class="fa-solid fa-clipboard-list"></i> <span id="acta-btn-label">Acta</span>
+      </button>
+      <button class="btn btn-sm btn-outline" onclick="goFullScreen()">
         <i class="fa-solid fa-expand"></i>
+      </button>
+      <button class="btn btn-sm btn-outline" onclick="goHome()">
+        <i class="fa-solid fa-arrow-left"></i> Inicio
+      </button>
+    </div>
+  </div>
+
+  <div class="pres-body">
+    <div class="slides-area" id="slides-area">
+
+      <!-- Slide 1: Portada -->
+      <div class="slide slide-cover active" id="slide-1">
+        <h1 id="cover-title">Junta Directiva <span style="color:var(--secondary)">N.A.N.A.</span></h1>
+        <p class="subtitle">Planificación Estratégica · Roadmap 2026-2027</p>
+        <p class="cover-date" id="cover-date"></p>
+      </div>
+
+      <!-- Slide 2: Estado Legal -->
+      <div class="slide" id="slide-2">
+        <div class="slide-inner">
+          <div>
+            <h2 class="slide-title">Estado Legal y Burocracia</h2>
+            <p class="slide-subtitle">La base jurídica para operar y recibir subvenciones.</p>
+            <ul class="points-list">
+              <li><i class="fa-solid fa-file-signature"></i><div><strong>Resolución Generalitat:</strong>Estatutos presentados, esperando inscripción definitiva.</div></li>
+              <li><i class="fa-solid fa-id-card"></i><div><strong>NIF Definitivo:</strong>Trámite en Hacienda (AEAT) tras la resolución.</div></li>
+              <li><i class="fa-solid fa-shield-halved"></i><div><strong>Certificado Digital (FNMT):</strong>Indispensable para firma de convenios.</div></li>
+              <li><i class="fa-solid fa-building-columns"></i><div><strong>Cuenta Bancaria Ética:</strong>Apertura en Triodos o Fiare.</div></li>
+            </ul>
+          </div>
+          <div class="slide-notepad">
+            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Notas de esta diapositiva</div>
+            <div class="editable-note" data-slide="2" contenteditable="true" data-placeholder="Apunta acuerdos, responsables..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Casal -->
+      <div class="slide" id="slide-3">
+        <div class="slide-inner">
+          <div>
+            <h2 class="slide-title">Casal de Verano Inclusivo 2027</h2>
+            <p class="slide-subtitle">Proyecto fundacional — Julio y Agosto 2027.</p>
+            <ul class="points-list">
+              <li><i class="fa-solid fa-file-contract"></i><div><strong>Dossier Técnico:</strong>Ratios especializados 1:1 o 1:2.</div></li>
+              <li><i class="fa-solid fa-landmark"></i><div><strong>Ayuntamiento:</strong>Regidoria d'Educació — Límite: Diciembre.</div></li>
+              <li><i class="fa-solid fa-school"></i><div><strong>Espacio:</strong>Colegio o centro cívico con accesibilidad universal.</div></li>
+              <li><i class="fa-solid fa-users"></i><div><strong>Monitores:</strong>Formación específica TEA, TDAH, movilidad reducida.</div></li>
+            </ul>
+          </div>
+          <div class="slide-notepad">
+            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Notas de esta diapositiva</div>
+            <div class="editable-note" data-slide="3" contenteditable="true" data-placeholder="Contactos, fechas clave, espacios visitados..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Digital -->
+      <div class="slide" id="slide-4">
+        <div class="slide-inner">
+          <div>
+            <h2 class="slide-title">Ecosistema Digital</h2>
+            <p class="slide-subtitle">Web, foro y comunicación de la asociación.</p>
+            <ul class="points-list">
+              <li><i class="fa-solid fa-globe"></i><div><strong>Landing Page:</strong>Formulario de sondeo a familias.</div></li>
+              <li><i class="fa-solid fa-comments"></i><div><strong>Foro Privado:</strong>Login, roles Admin/Socio, foros temáticos.</div></li>
+              <li><i class="fa-solid fa-scale-balanced"></i><div><strong>RGPD:</strong>Datos de menores — política estricta.</div></li>
+            </ul>
+          </div>
+          <div class="slide-notepad">
+            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Notas de esta diapositiva</div>
+            <div class="editable-note" data-slide="4" contenteditable="true" data-placeholder="Dominio, requisitos técnicos, categorías del foro..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Socios -->
+      <div class="slide" id="slide-5">
+        <div class="slide-inner">
+          <div>
+            <h2 class="slide-title">Estrategia de Socios</h2>
+            <p class="slide-subtitle">Sostenibilidad económica y crecimiento.</p>
+            <ul class="points-list">
+              <li><i class="fa-solid fa-hand-holding-heart"></i><div><strong>Simpatizante (Gratis):</strong>Newsletter, volumen y representatividad.</div></li>
+              <li><i class="fa-solid fa-star"></i><div><strong>Socio de Pleno Derecho:</strong>Voto, prioridad en actividades, foro privado.</div></li>
+              <li><i class="fa-solid fa-building-ngo"></i><div><strong>Socios Colaboradores:</strong>Empresas y patrocinios RSC.</div></li>
+            </ul>
+          </div>
+          <div class="slide-notepad">
+            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Notas de esta diapositiva</div>
+            <div class="editable-note" data-slide="5" contenteditable="true" data-placeholder="Cuota decidida, fecha de captación..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Próximos pasos -->
+      <div class="slide" id="slide-6">
+        <div class="slide-inner">
+          <div>
+            <h2 class="slide-title">Próximos Pasos</h2>
+            <p class="slide-subtitle">Cronograma inmediato para arrancar.</p>
+            <ul class="points-list">
+              <li><i class="fa-solid fa-bolt" style="color:var(--secondary)"></i><div><strong>Esta semana:</strong>Validar formulario y arrancar dossier.</div></li>
+              <li><i class="fa-solid fa-calendar-week"></i><div><strong>En 15 días:</strong>Web visible y confirmar cuenta bancaria.</div></li>
+              <li><i class="fa-solid fa-bullseye" style="color:var(--accent)"></i><div><strong>Noviembre:</strong>Dossier terminado · Cita en el Ayuntamiento.</div></li>
+            </ul>
+          </div>
+          <div class="slide-notepad">
+            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Resumen de acuerdos</div>
+            <div class="editable-note" data-slide="6" contenteditable="true" data-placeholder="Quién hace qué, próxima reunión..."></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /slides-area -->
+
+    <!-- ACTA PANEL -->
+    <div class="acta-panel" id="acta-panel">
+      <div class="acta-header">
+        <span><i class="fa-solid fa-scroll"></i> Acta de Reunión</span>
+        <i class="fa-solid fa-times acta-toggle-icon" onclick="toggleActaPanel()"></i>
+      </div>
+      <div class="acta-body">
+        <div>
+          <div class="acta-section-label"><i class="fa-solid fa-calendar"></i> Fecha</div>
+          <input type="date" id="acta-date" class="acta-textarea" style="min-height:auto;resize:none;" oninput="saveActaField('date', this.value)">
+        </div>
+        <div>
+          <div class="acta-section-label"><i class="fa-solid fa-pen-to-square"></i> Apuntes Generales</div>
+          <textarea id="acta-notes" class="acta-textarea" placeholder="Temas tratados, decisiones clave..." oninput="saveActaField('notes', this.value)"></textarea>
+        </div>
+        <div>
+          <div class="acta-section-label"><i class="fa-solid fa-list-check"></i> Tareas (To-Do)</div>
+          <div class="todo-input-row">
+            <input type="text" id="todo-input" placeholder="Añadir tarea..." onkeydown="if(event.key==='Enter') addTodo()">
+            <button onclick="addTodo()"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <ul id="todo-list"></ul>
+        </div>
+        <div>
+          <div class="acta-section-label"><i class="fa-solid fa-user-check"></i> Asistentes</div>
+          <textarea id="acta-attendees" class="acta-textarea" style="min-height:80px;" placeholder="Nombres de los directivos presentes..." oninput="saveActaField('attendees', this.value)"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pres-body -->
+
+  <div class="pres-nav">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>
+      <i class="fa-solid fa-arrow-left"></i> Anterior
     </button>
-
-    
-    <!-- Meeting Dashboard Toggle -->
-    <button id="panel-toggle-btn" onclick="togglePanel()">
-        <i class="fa-solid fa-clipboard-list"></i> Acta Reunión
+    <div class="progress-track">
+      <div class="slide-counter" id="slide-counter">Diapositiva 1 de 6</div>
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">
+      Siguiente <i class="fa-solid fa-arrow-right"></i>
     </button>
+  </div>
 
-    <!-- Meeting Dashboard Panel -->
-    <div id="meeting-panel">
-        <div class="panel-header">
-            <h3><i class="fa-solid fa-book-open"></i> Bitácora N.A.N.A.</h3>
-            <button class="close-btn" onclick="togglePanel()"><i class="fa-solid fa-times"></i></button>
-        </div>
-        
-        <div class="form-group">
-            <label for="meeting-date"><i class="fa-regular fa-calendar-days"></i> Fecha de la Reunión</label>
-            <input type="date" id="meeting-date" onchange="saveData('meeting-date', this.value)">
-        </div>
+</div><!-- /presentation -->
 
-        <div class="form-group">
-            <label for="meeting-notes"><i class="fa-solid fa-pen"></i> Apuntes Generales</label>
-            <textarea id="meeting-notes" placeholder="Escribe aquí los temas tratados, decisiones clave..." oninput="saveData('meeting-notes', this.value)"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label><i class="fa-solid fa-list-check"></i> Tareas (To-Do)</label>
-            <input type="text" id="new-todo" placeholder="Nueva tarea..." onkeypress="if(event.key === 'Enter') addTodo()">
-            <button id="add-todo-btn" onclick="addTodo()">Añadir Tarea</button>
-            <ul id="todo-list"></ul>
-        </div>
-        
-        <div style="margin-top: auto; font-size: 0.8rem; color: #a3a3a3; text-align: center;">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Los datos se guardan automáticamente en tu navegador.
-        </div>
+<!-- ============ MODAL: Nueva Reunión ============ -->
+<div class="modal-overlay" id="new-meeting-modal">
+  <div class="modal">
+    <h2><i class="fa-solid fa-plus" style="color:var(--secondary)"></i> Nueva Reunión</h2>
+    <div class="form-group">
+      <label>Nombre de la reunión</label>
+      <input type="text" id="modal-name" placeholder="Ej: Reunión Octubre 2026, Junta Ordinaria nº2...">
     </div>
-\n    <div id="presentation-container">
-        
-        <!-- Slide 1: Portada -->
-        <div class="slide slide-cover active" id="slide-1">
-            <div class="bg-shape-1"></div>
-            <div class="bg-shape-2"></div>
-            <div class="slide-content-wrapper" style="position: relative; z-index: 1;">
-                <div>
-                    <h1>Junta Directiva <span style="color: var(--secondary);">N.A.N.A.</span></h1>
-                    <p class="subtitle">Planificación Estratégica, Bases Legales y Roadmap 2026-2027</p>
-                    <div style="width: 120px; height: 8px; background-color: var(--secondary); margin: 2rem auto; border-radius: 4px;"></div>
-                    <p style="color: var(--text-main); font-size: 1.3rem; font-weight: 500;">Preparación Operativa y Lanzamiento</p>
-                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 1rem;"><i class="fa-regular fa-calendar"></i> Octubre 2026</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 2: Estado Legal -->
-        <div class="slide" id="slide-2">
-            <div class="bg-shape-1"></div>
-            <div class="slide-content-wrapper">
-                <div class="content-left" style="position: relative; z-index: 1;">
-                    <h2>Estado Legal y Burocracia</h2>
-                    <p class="subtitle">La base jurídica para poder operar y recibir subvenciones.</p>
-                    
-                    <ul class="points-list">
-                        <li>
-                            <i class="fa-solid fa-file-signature"></i>
-                            <div>
-                                <strong>Resolución Generalitat (Registro):</strong><br> Estatutos presentados. Estamos a la espera de la inscripción definitiva para tener personalidad jurídica plena.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-id-card"></i>
-                            <div>
-                                <strong>NIF Definitivo y Exenciones:</strong><br> Trámite en Hacienda (AEAT) tras la resolución. Evaluar exención de IVA para actividades sociales.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-shield-halved"></i>
-                            <div>
-                                <strong>Certificado Digital (FNMT):</strong><br> Indispensable para firma de convenios, solicitud de espacios públicos y subvenciones.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-building-columns"></i>
-                            <div>
-                                <strong>Banca Ética / Cuenta Operativa:</strong><br> Apertura de cuenta a nombre de la asociación para cuotas y donaciones (Triodos, Fiare o similar).
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="content-right" style="position: relative; z-index: 1;">
-                    <div class="notepad-container">
-                        <div class="notepad-header">
-                            <i class="fa-solid fa-pen-to-square"></i> Plan de Acción y Responsables
-                        </div>
-                        <div class="editable-notes" contenteditable="true">
-                            <ul>
-                                <li>Llamar al Departament de Justícia para urgir estado de estatutos: <b>[Nombre Responsable]</b></li>
-                                <li><b>Gestoría/Asesoría:</b> ¿Contratamos una gestoría pro-bono o especializada en Tercer Sector para presentar el modelo 036?</li>
-                                <li><b>Seguros Obligatorios:</b> Pedir presupuesto de Seguro de Responsabilidad Civil (imprescindible antes de organizar eventos con menores).</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 3: Proyecto Estrella -->
-        <div class="slide" id="slide-3">
-            <div class="bg-shape-2"></div>
-            <div class="slide-content-wrapper">
-                <div class="content-left" style="position: relative; z-index: 1;">
-                    <h2>Casal de Verano Inclusivo 2027</h2>
-                    <p class="subtitle">Nuestro proyecto fundacional (Julio y Agosto 2027).</p>
-                    
-                    <ul class="points-list">
-                        <li>
-                            <i class="fa-solid fa-file-contract"></i>
-                            <div>
-                                <strong>Dossier Técnico / Pedagógico:</strong><br> Documento formal detallando justificación, metodologías y <span class="highlight">ratios especializados (1:1 o 1:2)</span> para necesidades específicas.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-landmark"></i>
-                            <div>
-                                <strong>Alianzas Institucionales:</strong><br> Presentación en Ajuntament (Regidoria d'Educació i Drets Socials). Fecha límite: Diciembre 2026.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-school"></i>
-                            <div>
-                                <strong>Cesión de Espacios:</strong><br> Búsqueda de colegio público o centro cívico con accesibilidad universal (rampas, lavabos adaptados, espacios de calma).
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-users"></i>
-                            <div>
-                                <strong>Contratación de Profesionales:</strong><br> Monitores con formación específica (TEA, TDAH, movilidad reducida, educación especial).
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="content-right" style="position: relative; z-index: 1;">
-                    <div class="notepad-container">
-                        <div class="notepad-header">
-                            <i class="fa-solid fa-pen-to-square"></i> Acuerdos Proyecto Casal
-                        </div>
-                        <div class="editable-notes" contenteditable="true">
-                            <ul>
-                                <li><b>Financiación:</b> Identificar convocatorias de ayudas de la Diputació y Fundos privados (ej. Fundación "la Caixa") que abren en Enero/Febrero.</li>
-                                <li><b>Capacidad máxima:</b> Definir límite de plazas para el año 1 para asegurar calidad.</li>
-                                <li><b>Networking:</b> Contactar con otras AMPAs y asociaciones locales para hacer red y derivación de familias.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 4: Ecosistema Digital -->
-        <div class="slide" id="slide-4">
-            <div class="bg-shape-1"></div>
-            <div class="slide-content-wrapper">
-                <div class="content-left" style="position: relative; z-index: 1;">
-                    <h2>Ecosistema Digital y Comunicación</h2>
-                    <p class="subtitle">Nuestra ventana al mundo y punto de encuentro (Web + Foro).</p>
-                    
-                    <ul class="points-list">
-                        <li>
-                            <i class="fa-solid fa-globe"></i>
-                            <div>
-                                <strong>Landing Page MVP:</strong><br> Web sencilla de presentación con formulario de interés para captar necesidades reales de las familias.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-comments"></i>
-                            <div>
-                                <strong>Sistema de Comunidad (Foro):</strong><br> Espacio seguro (Login requerido) con roles de usuario, para crear red de apoyo mutuo entre familias socias.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-scale-balanced"></i>
-                            <div>
-                                <strong>Privacidad y RGPD:</strong><br> Crítico: Al tratar datos de menores y de salud, requerimos políticas de privacidad estrictas y consentimientos explícitos.
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="content-right" style="position: relative; z-index: 1;">
-                    <div class="notepad-container">
-                        <div class="notepad-header">
-                            <i class="fa-solid fa-pen-to-square"></i> Tareas Web y Comunidad
-                        </div>
-                        <div class="editable-notes" contenteditable="true">
-                            <b>Estructura propuesta para el Foro Privado:</b>
-                            <ul>
-                                <li>Café de Padres (Apoyo mutuo / Desahogo)</li>
-                                <li>Burocracia y Derechos (Becas NEE, discapacidad)</li>
-                                <li>Casal 2027 (Organización, voluntarios)</li>
-                                <li>Terapias y Recomendaciones locales</li>
-                            </ul>
-                            <br>
-                            <b>Tarea técnica:</b> Comprar dominio oficial y vincularlo al hosting gratuito (GitHub Pages).
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 5: Socios y Cuotas -->
-        <div class="slide" id="slide-5">
-            <div class="bg-shape-2"></div>
-            <div class="slide-content-wrapper">
-                <div class="content-left" style="position: relative; z-index: 1;">
-                    <h2>Estrategia de Socios y Viabilidad</h2>
-                    <p class="subtitle">Sostenibilidad económica y crecimiento de la base social.</p>
-                    
-                    <ul class="points-list">
-                        <li>
-                            <i class="fa-solid fa-hand-holding-heart"></i>
-                            <div>
-                                <strong>Modelo de Simpatizante (Gratis):</strong><br> Suscripción a newsletter. Ayuda a hacer "volumen" y demostrar representatividad ante las instituciones.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-star"></i>
-                            <div>
-                                <strong>Socio de Pleno Derecho (Cuota):</strong><br> Derecho a voto en asamblea, acceso total al foro privado, y prioridad en inscripción de actividades (Casal).
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-building-ngo"></i>
-                            <div>
-                                <strong>Socios Colaboradores (Empresas):</strong><br> Comercios locales que donan material, espacios o patrocinio económico a cambio de RSC (Responsabilidad Social Corporativa).
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="content-right" style="position: relative; z-index: 1;">
-                    <div class="notepad-container">
-                        <div class="notepad-header">
-                            <i class="fa-solid fa-pen-to-square"></i> Decisiones Asamblea
-                        </div>
-                        <div class="editable-notes" contenteditable="true">
-                            <div style="text-align: center; margin-bottom: 1.5rem; background: #fff; padding: 1rem; border-radius: 8px;">
-                                <span style="font-size: 1.1rem; color: var(--primary);"><b>Propuesta de Cuota Anual:</b></span><br>
-                                <span style="font-size: 2.5rem; color: var(--secondary); font-weight: 800;">30€ - 50€ / año</span>
-                                <p style="font-size: 0.9rem; color: var(--text-muted);">*A debatir y votar hoy.</p>
-                            </div>
-                            <ul>
-                                <li>¿Ofreceremos tarifa reducida para familias monoparentales o en riesgo de exclusión?</li>
-                                <li>Diseñar campaña de captación para lanzar en <b>Noviembre</b>.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 6: Plan de Acción -->
-        <div class="slide" id="slide-6">
-            <div class="bg-shape-1"></div>
-            <div class="slide-content-wrapper">
-                <div class="content-left" style="position: relative; z-index: 1;">
-                    <h2>Próximos Pasos Inmediatos</h2>
-                    <p class="subtitle">Cronograma operativo para las próximas semanas.</p>
-                    
-                    <ul class="points-list">
-                        <li>
-                            <i class="fa-solid fa-bolt" style="color: var(--secondary);"></i>
-                            <div>
-                                <strong style="color: var(--secondary);">Esta semana:</strong><br>
-                                - Validar formulario inicial de necesidades.<br>
-                                - Cerrar la redacción del Dossier del Casal.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-calendar-week"></i>
-                            <div>
-                                <strong>En 15 días:</strong><br>
-                                - Publicación de la Landing Page.<br>
-                                - Confirmar estado de la cuenta bancaria y NIF.
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-bullseye" style="color: var(--accent);"></i>
-                            <div>
-                                <strong style="color: var(--accent);">Hito Principal (Noviembre):</strong><br>
-                                - Presentación formal del dossier en el Ayuntamiento.<br>
-                                - Lanzamiento de campaña de captación de socios.
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="content-right" style="position: relative; z-index: 1;">
-                    <div class="notepad-container">
-                        <div class="notepad-header">
-                            <i class="fa-solid fa-pen-to-square"></i> Resumen de Acuerdos de Hoy
-                        </div>
-                        <div class="editable-notes" contenteditable="true" data-placeholder="Anotar quién hace qué para la próxima reunión...">
-                            <b>Delegación de tareas:</b><br>
-                            - Trámites legales y banco: <br>
-                            - Reunión Ayuntamiento: <br>
-                            - Web y RRSS: <br>
-                            <br>
-                            <i>Fecha de la próxima reunión de seguimiento:</i> <b>[DD/MM/AAAA]</b>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <div class="form-group">
+      <label>Fecha</label>
+      <input type="date" id="modal-date">
     </div>
-
-    <!-- Navigation Bar -->
-    <div id="navigation-bar">
-        <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>
-            <i class="fa-solid fa-arrow-left"></i> Anterior
-        </button>
-        
-        <div class="progress-container">
-            <div class="slide-counter">Diapositiva <span id="current-count">1</span> de <span id="total-count">6</span></div>
-            <div id="progress-bar"></div>
-        </div>
-
-        <button class="nav-btn" id="next-btn" onclick="nextSlide()">
-            Siguiente <i class="fa-solid fa-arrow-right"></i>
-        </button>
+    <div class="form-group">
+      <label>Descripción breve (opcional)</label>
+      <textarea id="modal-desc" placeholder="Temas principales a tratar..."></textarea>
     </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-secondary" onclick="createMeeting()"><i class="fa-solid fa-check"></i> Crear y Abrir</button>
+    </div>
+  </div>
+</div>
 
-    <script>
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const progressBar = document.getElementById('progress-bar');
-        const currentCountSpan = document.getElementById('current-count');
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        
-        let currentSlide = 0;
-        const totalSlides = slides.length;
-        
-        document.getElementById('total-count').innerText = totalSlides;
+<script>
+// =====================================================
+//  N.A.N.A. Portal — App Logic
+// =====================================================
 
-        function updateUI() {
-            slides.forEach((slide, index) => {
-                slide.classList.remove('active', 'previous');
-                if (index === currentSlide) {
-                    slide.classList.add('active');
-                } else if (index < currentSlide) {
-                    slide.classList.add('previous');
-                }
-            });
+let activeMeetingId = null;
+let actaPanelOpen = true;
+let currentSlide = 0;
+const TOTAL_SLIDES = 6;
+let todos = [];
 
-            prevBtn.disabled = currentSlide === 0;
-            nextBtn.disabled = currentSlide === totalSlides - 1;
+// --- Sessions ---
+function getSessions() {
+  return JSON.parse(localStorage.getItem('nana_meetings') || '[]');
+}
+function saveSessions(arr) {
+  localStorage.setItem('nana_meetings', JSON.stringify(arr));
+}
 
-            const progress = ((currentSlide) / (totalSlides - 1)) * 100;
-            progressBar.style.width = `${progress}%`;
-            currentCountSpan.innerText = currentSlide + 1;
-        }
+// --- Home ---
+function renderHome() {
+  const grid = document.getElementById('meetings-grid');
+  const sessions = getSessions();
 
-        function nextSlide() {
-            if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-                updateUI();
-            }
-        }
+  if (sessions.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <i class="fa-solid fa-calendar-xmark"></i>
+      <p>Aún no hay reuniones registradas.<br>Pulsa <strong>Nueva Reunión</strong> para empezar.</p>
+    </div>`;
+    document.getElementById('acta-history-section').style.display = 'none';
+    return;
+  }
 
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateUI();
-            }
-        }
+  grid.innerHTML = '';
+  sessions.sort((a,b) => b.date.localeCompare(a.date)).forEach(s => {
+    const notes = localStorage.getItem('nana_' + s.id + '_acta_notes') || '';
+    const attendees = localStorage.getItem('nana_' + s.id + '_acta_attendees') || '';
+    const todosArr = JSON.parse(localStorage.getItem('nana_' + s.id + '_todos') || '[]');
+    const doneTodos = todosArr.filter(t => t.done).length;
 
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
-                });
-                fullscreenBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
-                }
-            }
-        }
+    const card = document.createElement('div');
+    card.className = 'meeting-card';
+    card.innerHTML = `
+      <div class="meeting-card-header">
+        <span class="meeting-date-badge"><i class="fa-regular fa-calendar"></i> ${formatDate(s.date)}</span>
+        <button class="btn btn-danger" onclick="event.stopPropagation(); deleteMeeting('${s.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      <h3>${s.name}</h3>
+      <p>${s.description || 'Sin descripción.'}</p>
+      <div class="meeting-card-footer">
+        <div class="meeting-meta">
+          ${todosArr.length > 0 ? `<span class="tag"><i class="fa-solid fa-list-check"></i> ${doneTodos}/${todosArr.length} tareas</span>` : ''}
+          ${attendees ? `<span class="tag"><i class="fa-solid fa-users"></i> Asistentes</span>` : ''}
+          ${notes ? `<span class="tag"><i class="fa-solid fa-scroll"></i> Acta</span>` : ''}
+        </div>
+        <button class="btn btn-sm btn-primary" onclick="openMeeting('${s.id}')">Abrir <i class="fa-solid fa-arrow-right"></i></button>
+      </div>`;
+    grid.appendChild(card);
+  });
 
-        // Initialize UI
-        updateUI();
+  // History section
+  renderActaHistory(sessions);
+}
 
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if(document.activeElement.hasAttribute('contenteditable')) {
-                return;
-            }
-            if (e.key === 'ArrowRight') {
-                nextSlide();
-            } else if (e.key === 'ArrowLeft') {
-                prevSlide();
-            }
-        });
-        
-        // Listen for fullscreen change to update button icon correctly if user presses ESC
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
-            }
-        });
+function renderActaHistory(sessions) {
+  const section = document.getElementById('acta-history-section');
+  const list = document.getElementById('acta-history-list');
+  const withActas = sessions.filter(s => localStorage.getItem('nana_' + s.id + '_acta_notes'));
 
-        // --- Meeting Panel Logic ---
-        function togglePanel() {
-            document.getElementById('meeting-panel').classList.toggle('open');
-        }
+  if (withActas.length === 0) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = '';
+  withActas.sort((a,b) => b.date.localeCompare(a.date)).forEach(s => {
+    const notes = localStorage.getItem('nana_' + s.id + '_acta_notes') || '';
+    const div = document.createElement('div');
+    div.className = 'acta-entry';
+    div.innerHTML = `<h4><i class="fa-regular fa-calendar"></i> ${formatDate(s.date)} — ${s.name}</h4><p>${notes}</p>`;
+    list.appendChild(div);
+  });
+}
 
-        function saveData(key, value) {
-            localStorage.setItem('nana_' + key, value);
-        }
+function formatDate(dateStr) {
+  if (!dateStr) return 'Sin fecha';
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
+}
 
-        function loadData() {
-            const dateStr = localStorage.getItem('nana_meeting-date');
-            if (dateStr) document.getElementById('meeting-date').value = dateStr;
-            
-            const notes = localStorage.getItem('nana_meeting-notes');
-            if (notes) document.getElementById('meeting-notes').value = notes;
-            
-            renderTodos();
-            
-            // Load contenteditable notes inside slides
-            document.querySelectorAll('.editable-notes').forEach((el, index) => {
-                const savedHtml = localStorage.getItem('nana_slide_note_' + index);
-                if (savedHtml) el.innerHTML = savedHtml;
-                
-                // Save on edit
-                el.addEventListener('input', () => {
-                    localStorage.setItem('nana_slide_note_' + index, el.innerHTML);
-                });
-            });
-        }
+function deleteMeeting(id) {
+  if (!confirm('¿Borrar esta reunión y todas sus notas?')) return;
+  let sessions = getSessions().filter(s => s.id !== id);
+  saveSessions(sessions);
+  Object.keys(localStorage).filter(k => k.startsWith('nana_' + id)).forEach(k => localStorage.removeItem(k));
+  renderHome();
+}
 
-        // --- ToDo Logic ---
-        let todos = JSON.parse(localStorage.getItem('nana_todos')) || [];
+// --- Modal ---
+function openNewMeetingModal() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('modal-date').value = today;
+  document.getElementById('modal-name').value = '';
+  document.getElementById('modal-desc').value = '';
+  document.getElementById('new-meeting-modal').classList.add('open');
+  setTimeout(() => document.getElementById('modal-name').focus(), 300);
+}
+function closeModal() {
+  document.getElementById('new-meeting-modal').classList.remove('open');
+}
+function createMeeting() {
+  const name = document.getElementById('modal-name').value.trim();
+  const date = document.getElementById('modal-date').value;
+  const desc = document.getElementById('modal-desc').value.trim();
+  if (!name) { alert('Introduce un nombre para la reunión.'); return; }
+  const id = 'mtg_' + Date.now();
+  const sessions = getSessions();
+  sessions.push({ id, name, date, description: desc });
+  saveSessions(sessions);
+  closeModal();
+  openMeeting(id);
+}
 
-        function renderTodos() {
-            const list = document.getElementById('todo-list');
-            list.innerHTML = '';
-            todos.forEach((todo, index) => {
-                const li = document.createElement('li');
-                if (todo.completed) li.classList.add('completed');
-                
-                const checkbox = todo.completed ? "checked" : "";
-                li.innerHTML = "<input type='checkbox' " + checkbox + " onchange='toggleTodo(" + index + ")'>" +
-                               "<span>" + todo.text + "</span>" +
-                               "<i class='fa-solid fa-trash todo-del' onclick='deleteTodo(" + index + ")'></i>";
-                list.appendChild(li);
-            });
-        }
+// --- Open Meeting (Presentation) ---
+function openMeeting(id) {
+  activeMeetingId = id;
+  const sessions = getSessions();
+  const mtg = sessions.find(s => s.id === id);
+  if (!mtg) return;
 
-        function addTodo() {
-            const input = document.getElementById('new-todo');
-            const text = input.value.trim();
-            if (text !== "") {
-                todos.push({ text: text, completed: false });
-                localStorage.setItem('nana_todos', JSON.stringify(todos));
-                input.value = '';
-                renderTodos();
-            }
-        }
+  // Set header info
+  document.getElementById('pres-title').textContent = mtg.name;
+  document.getElementById('pres-date').textContent = formatDate(mtg.date);
+  document.getElementById('cover-date').textContent = formatDate(mtg.date);
 
-        function toggleTodo(index) {
-            todos[index].completed = !todos[index].completed;
-            localStorage.setItem('nana_todos', JSON.stringify(todos));
-            renderTodos();
-        }
+  // Reset slide position
+  currentSlide = 0;
+  updateSlideUI();
 
-        function deleteTodo(index) {
-            todos.splice(index, 1);
-            localStorage.setItem('nana_todos', JSON.stringify(todos));
-            renderTodos();
-        }
+  // Load acta data
+  document.getElementById('acta-date').value = localStorage.getItem('nana_' + id + '_acta_date') || mtg.date || '';
+  document.getElementById('acta-notes').value = localStorage.getItem('nana_' + id + '_acta_notes') || '';
+  document.getElementById('acta-attendees').value = localStorage.getItem('nana_' + id + '_acta_attendees') || '';
+  todos = JSON.parse(localStorage.getItem('nana_' + id + '_todos') || '[]');
+  renderTodos();
 
-        // Run on load
-        window.addEventListener('DOMContentLoaded', loadData);
-    </script>
+  // Load slide notes
+  document.querySelectorAll('.editable-note').forEach(el => {
+    const slide = el.getAttribute('data-slide');
+    el.innerHTML = localStorage.getItem('nana_' + id + '_note_s' + slide) || '';
+    el.oninput = () => {
+      localStorage.setItem('nana_' + id + '_note_s' + slide, el.innerHTML);
+    };
+  });
 
+  // Open acta panel by default
+  actaPanelOpen = true;
+  document.getElementById('acta-panel').classList.remove('collapsed');
+
+  showView('presentation');
+}
+
+function goHome() {
+  showView('home');
+  activeMeetingId = null;
+  renderHome();
+}
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  if (id === 'presentation') el.style.display = 'flex';
+  else el.style.display = '';
+  if (id === 'home') document.getElementById('presentation').style.display = 'none';
+}
+
+// --- Acta Panel ---
+function toggleActaPanel() {
+  actaPanelOpen = !actaPanelOpen;
+  const panel = document.getElementById('acta-panel');
+  if (actaPanelOpen) {
+    panel.classList.remove('collapsed');
+    document.getElementById('acta-btn-label').textContent = 'Acta';
+  } else {
+    panel.classList.add('collapsed');
+    document.getElementById('acta-btn-label').textContent = 'Ver Acta';
+  }
+}
+
+function saveActaField(field, value) {
+  if (!activeMeetingId) return;
+  localStorage.setItem('nana_' + activeMeetingId + '_acta_' + field, value);
+}
+
+// --- Slides ---
+function updateSlideUI() {
+  const slides = document.querySelectorAll('.slide');
+  slides.forEach((s, i) => {
+    s.classList.remove('active', 'previous');
+    if (i === currentSlide) s.classList.add('active');
+    else if (i < currentSlide) s.classList.add('previous');
+  });
+  document.getElementById('prev-btn').disabled = currentSlide === 0;
+  document.getElementById('next-btn').disabled = currentSlide === TOTAL_SLIDES - 1;
+  const pct = currentSlide === 0 ? 0 : (currentSlide / (TOTAL_SLIDES - 1)) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('slide-counter').textContent = 'Diapositiva ' + (currentSlide + 1) + ' de ' + TOTAL_SLIDES;
+}
+function nextSlide() { if (currentSlide < TOTAL_SLIDES - 1) { currentSlide++; updateSlideUI(); } }
+function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlideUI(); } }
+
+document.addEventListener('keydown', e => {
+  const tag = document.activeElement.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.hasAttribute('contenteditable')) return;
+  if (e.key === 'ArrowRight') nextSlide();
+  else if (e.key === 'ArrowLeft') prevSlide();
+});
+
+function goFullScreen() {
+  if (!document.fullscreenElement) {
+    document.getElementById('presentation').requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// --- To-Do ---
+function renderTodos() {
+  const list = document.getElementById('todo-list');
+  list.innerHTML = '';
+  todos.forEach((t, i) => {
+    const li = document.createElement('li');
+    if (t.done) li.classList.add('done');
+    const cb = t.done ? 'checked' : '';
+    li.innerHTML = "<input type='checkbox' " + cb + " onchange='toggleTodo(" + i + ")'>" +
+                   "<span>" + t.text + "</span>" +
+                   "<i class='fa-solid fa-trash todo-del' onclick='deleteTodo(" + i + ")'></i>";
+    list.appendChild(li);
+  });
+}
+function addTodo() {
+  const input = document.getElementById('todo-input');
+  const text = input.value.trim();
+  if (!text) return;
+  todos.push({ text, done: false });
+  localStorage.setItem('nana_' + activeMeetingId + '_todos', JSON.stringify(todos));
+  input.value = '';
+  renderTodos();
+}
+function toggleTodo(i) {
+  todos[i].done = !todos[i].done;
+  localStorage.setItem('nana_' + activeMeetingId + '_todos', JSON.stringify(todos));
+  renderTodos();
+}
+function deleteTodo(i) {
+  todos.splice(i, 1);
+  localStorage.setItem('nana_' + activeMeetingId + '_todos', JSON.stringify(todos));
+  renderTodos();
+}
+
+// --- Init ---
+window.addEventListener('DOMContentLoaded', () => {
+  renderHome();
+  document.getElementById('presentation').style.display = 'none';
+});
+</script>
 </body>
 </html>
-
