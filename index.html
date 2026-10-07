@@ -1,877 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>N.A.N.A. — Portal Junta Directiva</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<style>
-:root {
-  --primary: #1e4b6e;
-  --primary-light: #306b99;
-  --secondary: #e67e22;
-  --accent: #27ae60;
-  --danger: #e74c3c;
-  --bg: #f0f4f8;
-  --white: #ffffff;
-  --text: #2c3e50;
-  --muted: #7f8c8d;
-  --border: #dce3ea;
-  --note-bg: #fffdf5;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-/* VIEWS */
-.view { display: none; }
-.view.active { display: block; }
-#meeting-view.active { display: flex; }
-
-/* HEADER */
-.home-header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-  padding: 2.5rem 4rem 5rem;
-  color: white; position: relative; overflow: hidden;
-}
-.home-header::after {
-  content: ''; position: absolute; bottom: -60px; left: 0; right: 0;
-  height: 120px; background: var(--bg);
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-}
-.home-header h1 { font-size: 2.5rem; font-weight: 800; }
-.home-header h1 span { color: var(--secondary); }
-.home-header p { opacity: 0.75; margin-top: 0.4rem; font-size: 1rem; }
-
-.home-body { padding: 2rem 4rem 4rem; max-width: 1200px; margin: 0 auto; }
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-.section-header h2 { font-size: 1.4rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
-
-/* BUTTONS */
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 50px; font-family: 'Poppins'; font-size: 0.95rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s ease; text-decoration: none; }
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); box-shadow: 0 6px 15px rgba(30,75,110,0.25); }
-.btn-secondary { background: var(--secondary); color: white; }
-.btn-secondary:hover { background: #d67118; transform: translateY(-1px); }
-.btn-accent { background: var(--accent); color: white; }
-.btn-accent:hover { background: #219a52; }
-.btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
-.btn-outline:hover { background: var(--primary); color: white; }
-.btn-danger { background: var(--danger); color: white; }
-.btn-danger:hover { background: #c0392b; }
-.btn-sm { font-size: 0.82rem; padding: 7px 14px; }
-.btn-ghost { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 4px 8px; }
-.btn-ghost:hover { color: var(--danger); }
-
-/* CARDS GRID */
-.meetings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-.meeting-card {
-  background: white; border-radius: 16px; border: 1px solid var(--border);
-  box-shadow: 0 3px 12px rgba(0,0,0,0.05); overflow: hidden;
-  transition: all 0.25s ease; display: flex; flex-direction: column;
-}
-.meeting-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-.card-top { padding: 1.3rem 1.3rem 0; }
-.card-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.8rem; }
-.badge { font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
-.badge-date { background: #e8f4fd; color: var(--primary); }
-.badge-acta { background: #fef9e7; color: #d4ac0d; }
-.badge-todo { background: #e9f7ef; color: var(--accent); }
-.card-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; }
-.card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
-.card-actions { display: flex; gap: 0.6rem; padding: 1rem 1.3rem; margin-top: auto; border-top: 1px solid var(--border); }
-.card-delete { margin-left: auto; }
-
-.empty-state { grid-column: 1/-1; text-align: center; padding: 4rem 2rem; color: var(--muted); }
-.empty-state i { font-size: 4rem; display: block; margin-bottom: 1rem; opacity: 0.25; }
-
-/* ACTA HISTORY */
-.history-section { margin-top: 2.5rem; background: white; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 3px 12px rgba(0,0,0,0.05); overflow: hidden; }
-.history-header { padding: 1rem 1.5rem; background: var(--primary); color: white; font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-.history-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-.history-entry { border-left: 4px solid var(--secondary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; background: var(--bg); }
-.history-entry-title { font-weight: 700; color: var(--primary); font-size: 0.95rem; margin-bottom: 0.5rem; }
-.history-entry-notes { font-size: 0.88rem; color: var(--text); line-height: 1.6; white-space: pre-wrap; }
-.history-entry-todos { margin-top: 0.8rem; font-size: 0.85rem; }
-.history-entry-todos ul { list-style: none; padding: 0; }
-.history-entry-todos li { display: flex; align-items: center; gap: 6px; color: var(--text); padding: 2px 0; }
-.history-entry-todos li.done { color: var(--muted); text-decoration: line-through; }
-.history-entry-todos li::before { content: '◦'; color: var(--secondary); font-size: 1.2rem; }
-.history-entry-todos li.done::before { content: '✓'; color: var(--accent); }
-
-/* MODAL */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-.modal-overlay.open { opacity: 1; pointer-events: auto; }
-.modal { background: white; border-radius: 20px; padding: 2.5rem; width: 560px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s; max-height: 90vh; overflow-y: auto; }
-.modal-overlay.open .modal { transform: scale(1); }
-.modal h2 { color: var(--primary); margin-bottom: 0.3rem; }
-.modal .modal-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.5rem; line-height: 1.5; }
-.form-group { margin-bottom: 1.2rem; }
-.form-group label { display: block; font-weight: 600; color: var(--primary); margin-bottom: 5px; font-size: 0.9rem; }
-.form-group label small { font-weight: 400; color: var(--muted); }
-.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 11px 13px; border: 2px solid var(--border); border-radius: 10px; font-family: 'Poppins'; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
-.form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
-.form-group textarea { resize: vertical; min-height: 80px; }
-.hint-box { background: #e8f4fd; border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; font-size: 0.85rem; color: var(--primary); line-height: 1.6; margin-bottom: 1.2rem; }
-.hint-box code { background: rgba(30,75,110,0.1); padding: 2px 5px; border-radius: 4px; font-size: 0.85rem; }
-.modal-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
-
-/* MEETING VIEW */
-#meeting-view { height: 100vh; flex-direction: column; overflow: hidden; }
-.meeting-header {
-  background: white; padding: 0.7rem 1.5rem;
-  display: flex; align-items: center; justify-content: space-between;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06); z-index: 50; flex-shrink: 0; gap: 1rem;
-}
-.meeting-header-info h3 { font-size: 1rem; font-weight: 700; color: var(--primary); }
-.meeting-header-info p { font-size: 0.78rem; color: var(--muted); }
-.meeting-header-actions { display: flex; gap: 0.6rem; align-items: center; flex-shrink: 0; }
-
-.meeting-body { display: flex; flex: 1; overflow: hidden; }
-
-/* Embed area */
-.embed-area { flex: 1; background: #1a1a2e; display: flex; align-items: center; justify-content: center; position: relative; }
-.embed-area iframe { width: 100%; height: 100%; border: none; }
-.embed-placeholder { text-align: center; color: rgba(255,255,255,0.5); padding: 3rem; }
-.embed-placeholder i { font-size: 4rem; display: block; margin-bottom: 1rem; }
-.embed-placeholder p { font-size: 1rem; line-height: 1.6; }
-
-/* ACTA PANEL */
-.acta-panel { width: 360px; flex-shrink: 0; background: white; border-left: 1px solid var(--border); display: flex; flex-direction: column; transition: width 0.3s ease, opacity 0.3s ease; overflow: hidden; }
-.acta-panel.hidden { width: 0; opacity: 0; pointer-events: none; }
-.acta-panel-head { background: var(--primary); color: white; padding: 1rem 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-.acta-panel-head h4 { font-size: 0.95rem; }
-.acta-panel-body { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: 1.3rem; }
-.acta-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 5px; display: block; }
-.acta-input { width: 100%; border: 2px solid var(--border); border-radius: 8px; padding: 9px; font-family: 'Poppins'; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
-.acta-input:focus { border-color: var(--primary); }
-textarea.acta-input { resize: vertical; min-height: 100px; }
-.acta-panel-footer { padding: 1rem 1.2rem; border-top: 1px solid var(--border); flex-shrink: 0; display: flex; flex-direction: column; gap: 0.6rem; }
-
-/* TODO */
-.todo-row { display: flex; gap: 6px; }
-.todo-row input { flex: 1; border: 2px solid var(--border); border-radius: 8px; padding: 8px 10px; font-family: 'Poppins'; font-size: 0.85rem; outline: none; }
-.todo-row input:focus { border-color: var(--primary); }
-.todo-row button { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
-#todo-list { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 4px; }
-#todo-list li { display: flex; align-items: center; gap: 7px; background: var(--bg); border-radius: 6px; padding: 7px 9px; }
-#todo-list li.done span { text-decoration: line-through; color: var(--muted); }
-#todo-list li span { flex: 1; font-size: 0.85rem; }
-#todo-list li input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
-.todo-del { color: var(--danger); cursor: pointer; font-size: 0.8rem; }
-
-/* EXPORT MODAL */
-#export-content { white-space: pre-wrap; font-family: monospace; font-size: 0.85rem; background: var(--bg); padding: 1rem; border-radius: 8px; max-height: 300px; overflow-y: auto; border: 1px solid var(--border); line-height: 1.6; }
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .home-header { padding: 2rem 1.5rem 4rem; }
-  .home-header h1 { font-size: 1.8rem; }
-  .home-body { padding: 1.5rem; }
-  .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .acta-panel { width: 100%; max-height: 50vh; border-left: none; border-top: 1px solid var(--border); }
-  .meeting-body { flex-direction: column; }
-  .embed-area { min-height: 250px; }
-}
-</style>
-</head>
-<body>
-
-<!-- ============ HOME VIEW ============ -->
-<div id="home" class="view active">
-  <div class="home-header">
-    <h1>Junta Directiva <span>N.A.N.A.</span></h1>
-    <p>Portal de Reuniones, Presentaciones y Actas · 2026-2027</p>
-  </div>
-  <div class="home-body">
-    <div class="section-header">
-      <h2><i class="fa-solid fa-calendar-days"></i> Reuniones registradas</h2>
-      <button class="btn btn-secondary" onclick="openNewModal()">
-        <i class="fa-solid fa-plus"></i> Nueva Reunión
-      </button>
-    </div>
-    <div class="meetings-grid" id="meetings-grid"></div>
-    <div class="history-section" id="history-section" style="display:none">
-      <div class="history-header"><i class="fa-solid fa-scroll"></i> Historial de Actas</div>
-      <div class="history-body" id="history-body"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ MEETING VIEW ============ -->
-<div id="meeting-view" class="view">
-  <div class="meeting-header">
-    <div class="meeting-header-info">
-      <h3 id="mv-title">Reunión</h3>
-      <p id="mv-date"></p>
-    </div>
-    <div class="meeting-header-actions">
-      <button class="btn btn-sm btn-outline" onclick="toggleActa()" id="acta-toggle-btn">
-        <i class="fa-solid fa-clipboard-list"></i> Acta
-      </button>
-      <button class="btn btn-sm btn-accent" onclick="openExportModal()">
-        <i class="fa-solid fa-file-export"></i> Exportar Acta
-      </button>
-      <button class="btn btn-sm" id="gtasks-btn" onclick="sendToGoogleTasks()" style="background:#4285f4;color:white;display:none">
-        <i class="fa-brands fa-google"></i> Enviar a Google Tasks
-      </button>
-      <button class="btn btn-sm btn-outline" onclick="toggleFullscreen()">
-        <i class="fa-solid fa-expand"></i>
-      </button>
-      <button class="btn btn-sm btn-outline" onclick="openSettings()" title="Configuración">
-        <i class="fa-solid fa-gear"></i>
-      </button>
-      <button class="btn btn-sm btn-primary" onclick="goHome()">
-        <i class="fa-solid fa-arrow-left"></i> Inicio
-      </button>
-    </div>
-  </div>
-
-  <div class="meeting-body">
-    <!-- Presentation embed -->
-    <div class="embed-area" id="embed-area">
-      <div class="embed-placeholder">
-        <i class="fa-solid fa-display"></i>
-        <p>No hay presentación enlazada.<br>Edita la reunión para añadir un enlace de Google Slides.</p>
-      </div>
-    </div>
-
-    <!-- Acta Panel -->
-    <div class="acta-panel" id="acta-panel">
-      <div class="acta-panel-head">
-        <h4><i class="fa-solid fa-scroll"></i> Acta de Reunión</h4>
-        <button class="btn-ghost" style="color:rgba(255,255,255,0.7)" onclick="toggleActa()"><i class="fa-solid fa-times"></i></button>
-      </div>
-      <div class="acta-panel-body">
-
-        <div>
-          <span class="acta-label"><i class="fa-regular fa-calendar"></i> Fecha</span>
-          <input type="date" id="acta-date" class="acta-input" style="min-height:auto" oninput="saveActa('date',this.value)">
-        </div>
-
-        <div>
-          <span class="acta-label"><i class="fa-solid fa-users"></i> Asistentes</span>
-          <textarea id="acta-attendees" class="acta-input" style="min-height:70px" placeholder="Nombres de los directivos presentes..." oninput="saveActa('attendees',this.value)"></textarea>
-        </div>
-
-        <div>
-          <span class="acta-label"><i class="fa-solid fa-pen-to-square"></i> Apuntes y Decisiones</span>
-          <textarea id="acta-notes" class="acta-input" placeholder="Temas tratados, acuerdos, votaciones..." oninput="saveActa('notes',this.value)"></textarea>
-        </div>
-
-        <div>
-          <span class="acta-label"><i class="fa-solid fa-list-check"></i> To-Do (Tareas)</span>
-          <div class="todo-row">
-            <input type="text" id="todo-input" placeholder="Nueva tarea..." onkeydown="if(event.key==='Enter') addTodo()">
-            <button onclick="addTodo()"><i class="fa-solid fa-plus"></i></button>
-          </div>
-          <ul id="todo-list"></ul>
-        </div>
-
-        <div>
-          <span class="acta-label"><i class="fa-solid fa-comment-dots"></i> Próxima reunión</span>
-          <input type="text" id="acta-next" class="acta-input" placeholder="Fecha y lugar propuesto..." oninput="saveActa('next',this.value)">
-        </div>
-
-      </div>
-      <div class="acta-panel-footer">
-        <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="openExportModal()">
-          <i class="fa-solid fa-file-export"></i> Exportar Acta
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ MODAL: Nueva/Editar Reunión ============ -->
-<div class="modal-overlay" id="meeting-modal">
-  <div class="modal">
-    <h2 id="modal-title"><i class="fa-solid fa-plus" style="color:var(--secondary)"></i> Nueva Reunión</h2>
-    <p class="modal-sub">Crea un espacio para esta reunión. Podrás vincular tu presentación de Google Slides y registrar el acta.</p>
-
-    <div class="form-group">
-      <label>Nombre de la reunión</label>
-      <input type="text" id="m-name" placeholder="Ej: Reunión Fundacional Octubre 2026">
-    </div>
-    <div class="form-group">
-      <label>Fecha</label>
-      <input type="date" id="m-date">
-    </div>
-    <div class="form-group">
-      <label>Descripción breve <small>(opcional)</small></label>
-      <textarea id="m-desc" placeholder="Temas principales a tratar en esta reunión..."></textarea>
-    </div>
-    <div class="form-group">
-      <label>Enlace de Google Slides <small>(opcional, puedes añadirlo después)</small></label>
-      <div class="hint-box">
-        <strong>¿Cómo obtener el enlace?</strong><br>
-        En Google Slides: <strong>Archivo → Publicar en la web → Insertar</strong> y copia la URL del atributo <code>src</code> del iframe.
-      </div>
-      <input type="url" id="m-embed" placeholder="https://docs.google.com/presentation/d/.../embed?...">
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-secondary" onclick="saveMeeting()"><i class="fa-solid fa-check"></i> Guardar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ============ MODAL: Exportar Acta ============ -->
-<div class="modal-overlay" id="export-modal">
-  <div class="modal">
-    <h2><i class="fa-solid fa-file-export" style="color:var(--accent)"></i> Exportar Acta</h2>
-    <p class="modal-sub" style="margin-bottom:1rem">Copia el texto del acta o imprime esta página como PDF.</p>
-    <pre id="export-content"></pre>
-    <div class="modal-actions" style="margin-top:1rem">
-      <button class="btn btn-outline" onclick="closeExport()">Cerrar</button>
-      <button class="btn btn-primary" onclick="copyActa()"><i class="fa-solid fa-copy"></i> Copiar texto</button>
-      <button class="btn btn-accent" onclick="printActa()"><i class="fa-solid fa-print"></i> Imprimir / PDF</button>
-    </div>
-  </div>
-</div>
-
-<!-- ============ MODAL: Configuración Google Tasks ============ -->
-<div class="modal-overlay" id="settings-modal">
-  <div class="modal">
-    <h2><i class="fa-solid fa-gear" style="color:var(--primary)"></i> Configuración</h2>
-    <p class="modal-sub">Para enviar tareas directamente a <strong>Google Tasks</strong>, necesitas un Client ID de Google. Es gratuito y se configura en 5 minutos.</p>
-
-    <div class="hint-box" style="margin-bottom:1.5rem">
-      <strong>¿Cómo obtener el Client ID?</strong><br>
-      1. Ve a <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a><br>
-      2. Crea un proyecto → <strong>APIs y Servicios → Credenciales</strong><br>
-      3. Crea una <strong>ID de cliente OAuth 2.0</strong> (tipo: Aplicación Web)<br>
-      4. Añade <code>https://nana-asoc.github.io</code> como origen autorizado<br>
-      5. Activa la <strong>Google Tasks API</strong> en "Biblioteca"<br>
-      6. Copia el Client ID y pégalo aquí abajo.
-    </div>
-
-    <div class="form-group">
-      <label>Google Client ID</label>
-      <input type="text" id="settings-client-id" placeholder="xxxxxxxx.apps.googleusercontent.com">
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeSettings()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveSettings()"><i class="fa-solid fa-check"></i> Guardar y Conectar</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// =====================================================
-//  N.A.N.A. Portal — v3.1 (Google Tasks)
-// =====================================================
-
-let activeMeetingId = null;
-let editingId = null;
-let todos = [];
-let actaVisible = true;
-let gAccessToken = null;
-
-// ─── Persistence helpers ───────────────────────────
-const LS = {
-  get: (k, def) => { try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch { return def; } },
-  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
-  raw: (k, def) => localStorage.getItem(k) ?? def,
-  setRaw: (k, v) => localStorage.setItem(k, v),
-  del: (k) => localStorage.removeItem(k)
-};
-
-function getMeetings() { return LS.get('nana_meetings', []); }
-function saveMeetings(arr) { LS.set('nana_meetings', arr); }
-
-function formatDate(d) {
-  if (!d) return '—';
-  const date = new Date(d + 'T12:00:00');
-  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-}
-
-// ─── HOME ─────────────────────────────────────────
-function renderHome() {
-  const meetings = getMeetings().sort((a,b) => (b.date||'').localeCompare(a.date||''));
-  const grid = document.getElementById('meetings-grid');
-  grid.innerHTML = '';
-
-  if (meetings.length === 0) {
-    grid.innerHTML = `<div class="empty-state">
-      <i class="fa-solid fa-calendar-xmark"></i>
-      <p>Aún no hay reuniones.<br>Pulsa <strong>Nueva Reunión</strong> para empezar.</p>
-    </div>`;
-    document.getElementById('history-section').style.display = 'none';
-    return;
-  }
-
-  meetings.forEach(m => {
-    const notes = LS.raw('nana_' + m.id + '_notes', '');
-    const attendees = LS.raw('nana_' + m.id + '_attendees', '');
-    const todosArr = LS.get('nana_' + m.id + '_todos', []);
-    const done = todosArr.filter(t => t.done).length;
-
-    const card = document.createElement('div');
-    card.className = 'meeting-card';
-    card.innerHTML = `
-      <div class="card-top">
-        <div class="card-badges">
-          <span class="badge badge-date"><i class="fa-regular fa-calendar"></i> ${formatDate(m.date)}</span>
-          ${notes ? '<span class="badge badge-acta"><i class="fa-solid fa-scroll"></i> Acta</span>' : ''}
-          ${todosArr.length ? '<span class="badge badge-todo"><i class="fa-solid fa-list-check"></i> ' + done + '/' + todosArr.length + ' tareas</span>' : ''}
-        </div>
-        <div class="card-title">${m.name}</div>
-        <div class="card-desc">${m.desc || 'Sin descripción.'}</div>
-      </div>
-      <div class="card-actions">
-        <button class="btn btn-sm btn-primary" onclick="openMeeting('${m.id}')"><i class="fa-solid fa-play"></i> Abrir</button>
-        <button class="btn btn-sm btn-outline" onclick="openEditModal('${m.id}')"><i class="fa-solid fa-pen"></i> Editar</button>
-        <button class="btn btn-sm btn-danger card-delete" onclick="deleteMeeting('${m.id}')"><i class="fa-solid fa-trash"></i></button>
-      </div>`;
-    grid.appendChild(card);
-  });
-
-  renderHistory(meetings);
-}
-
-function renderHistory(meetings) {
-  const section = document.getElementById('history-section');
-  const body = document.getElementById('history-body');
-  const withActas = meetings.filter(m => LS.raw('nana_' + m.id + '_notes', ''));
-  if (!withActas.length) { section.style.display = 'none'; return; }
-  section.style.display = '';
-  body.innerHTML = '';
-
-  withActas.forEach(m => {
-    const notes = LS.raw('nana_' + m.id + '_notes', '');
-    const attendees = LS.raw('nana_' + m.id + '_attendees', '');
-    const next = LS.raw('nana_' + m.id + '_next', '');
-    const todosArr = LS.get('nana_' + m.id + '_todos', []);
-
-    const div = document.createElement('div');
-    div.className = 'history-entry';
-    let html = `<div class="history-entry-title"><i class="fa-regular fa-calendar"></i> ${formatDate(m.date)} — ${m.name}</div>`;
-    if (attendees) html += `<div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem"><i class="fa-solid fa-users"></i> ${attendees}</div>`;
-    if (notes) html += `<div class="history-entry-notes">${notes}</div>`;
-    if (todosArr.length) {
-      html += `<div class="history-entry-todos"><strong style="font-size:0.82rem;color:var(--primary)">Tareas:</strong><ul>` +
-        todosArr.map(t => `<li class="${t.done?'done':''}">${t.text}</li>`).join('') + `</ul></div>`;
-    }
-    if (next) html += `<div style="font-size:0.82rem;color:var(--muted);margin-top:0.6rem"><i class="fa-solid fa-arrow-right"></i> Próxima reunión: <strong>${next}</strong></div>`;
-    div.innerHTML = html;
-    body.appendChild(div);
-  });
-}
-
-// ─── MODAL: Nueva / Editar ─────────────────────────
-function openNewModal() {
-  editingId = null;
-  document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-plus" style="color:var(--secondary)"></i> Nueva Reunión';
-  document.getElementById('m-name').value = '';
-  document.getElementById('m-date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('m-desc').value = '';
-  document.getElementById('m-embed').value = '';
-  document.getElementById('meeting-modal').classList.add('open');
-  setTimeout(() => document.getElementById('m-name').focus(), 300);
-}
-
-function openEditModal(id) {
-  const meetings = getMeetings();
-  const m = meetings.find(x => x.id === id);
-  if (!m) return;
-  editingId = id;
-  document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-pen" style="color:var(--secondary)"></i> Editar Reunión';
-  document.getElementById('m-name').value = m.name;
-  document.getElementById('m-date').value = m.date || '';
-  document.getElementById('m-desc').value = m.desc || '';
-  document.getElementById('m-embed').value = m.embed || '';
-  document.getElementById('meeting-modal').classList.add('open');
-}
-
-function closeModal() {
-  document.getElementById('meeting-modal').classList.remove('open');
-}
-
-function saveMeeting() {
-  const name = document.getElementById('m-name').value.trim();
-  if (!name) { alert('Introduce un nombre para la reunión.'); return; }
-  const date = document.getElementById('m-date').value;
-  const desc = document.getElementById('m-desc').value.trim();
-  const embed = document.getElementById('m-embed').value.trim();
-
-  let meetings = getMeetings();
-
-  if (editingId) {
-    meetings = meetings.map(m => m.id === editingId ? { ...m, name, date, desc, embed } : m);
-    saveMeetings(meetings);
-    closeModal();
-    renderHome();
-  } else {
-    const id = 'mtg_' + Date.now();
-    meetings.push({ id, name, date, desc, embed });
-    saveMeetings(meetings);
-    closeModal();
-    openMeeting(id);
-  }
-}
-
-function deleteMeeting(id) {
-  if (!confirm('¿Borrar esta reunión y todas sus notas?')) return;
-  saveMeetings(getMeetings().filter(m => m.id !== id));
-  Object.keys(localStorage).filter(k => k.startsWith('nana_' + id)).forEach(k => localStorage.removeItem(k));
-  renderHome();
-}
-
-// ─── MEETING VIEW ─────────────────────────────────
-function openMeeting(id) {
-  const meetings = getMeetings();
-  const m = meetings.find(x => x.id === id);
-  if (!m) return;
-
-  activeMeetingId = id;
-  document.getElementById('mv-title').textContent = m.name;
-  document.getElementById('mv-date').textContent = formatDate(m.date);
-
-  // Embed
-  const embedArea = document.getElementById('embed-area');
-  if (m.embed) {
-    embedArea.innerHTML = '<iframe src="' + m.embed + '" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
-  } else {
-    embedArea.innerHTML = `<div class="embed-placeholder">
-      <i class="fa-brands fa-google"></i>
-      <p>No hay presentación enlazada.<br><button class="btn btn-sm btn-outline" style="margin-top:1rem" onclick="goHome();setTimeout(()=>openEditModal('${id}'),100)"><i class="fa-solid fa-link"></i> Vincular Google Slides</button></p>
-    </div>`;
-  }
-
-  // Load acta
-  document.getElementById('acta-date').value = LS.raw('nana_' + id + '_date', m.date || '');
-  document.getElementById('acta-attendees').value = LS.raw('nana_' + id + '_attendees', '');
-  document.getElementById('acta-notes').value = LS.raw('nana_' + id + '_notes', '');
-  document.getElementById('acta-next').value = LS.raw('nana_' + id + '_next', '');
-  todos = LS.get('nana_' + id + '_todos', []);
-  renderTodos();
-
-  // Show acta panel
-  actaVisible = true;
-  document.getElementById('acta-panel').classList.remove('hidden');
-
-  showView('meeting-view');
-}
-
-function goHome() {
-  activeMeetingId = null;
-  showView('home');
-  renderHome();
-}
-
-function showView(id) {
-  document.querySelectorAll('.view').forEach(v => { v.classList.remove('active'); v.style.display = ''; });
-  const el = document.getElementById(id);
-  el.classList.add('active');
-}
-
-// ─── ACTA ─────────────────────────────────────────
-function toggleActa() {
-  actaVisible = !actaVisible;
-  document.getElementById('acta-panel').classList.toggle('hidden', !actaVisible);
-}
-
-function saveActa(field, value) {
-  if (!activeMeetingId) return;
-  LS.setRaw('nana_' + activeMeetingId + '_' + field, value);
-}
-
-// ─── TODO ─────────────────────────────────────────
-function renderTodos() {
-  const list = document.getElementById('todo-list');
-  list.innerHTML = '';
-  todos.forEach((t, i) => {
-    const li = document.createElement('li');
-    if (t.done) li.classList.add('done');
-    li.innerHTML = "<input type='checkbox' " + (t.done ? 'checked' : '') + " onchange='toggleTodo(" + i + ")'>" +
-                   "<span>" + escHtml(t.text) + "</span>" +
-                   "<i class='fa-solid fa-trash todo-del' onclick='deleteTodo(" + i + ")'></i>";
-    list.appendChild(li);
-  });
-}
-
-function saveTodos() { LS.set('nana_' + activeMeetingId + '_todos', todos); }
-
-function addTodo() {
-  const input = document.getElementById('todo-input');
-  const text = input.value.trim();
-  if (!text) return;
-  todos.push({ text, done: false });
-  saveTodos(); input.value = ''; renderTodos();
-}
-function toggleTodo(i) { todos[i].done = !todos[i].done; saveTodos(); renderTodos(); }
-function deleteTodo(i) { todos.splice(i, 1); saveTodos(); renderTodos(); }
-
-function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ─── EXPORT ───────────────────────────────────────
-function buildActaText() {
-  const meetings = getMeetings();
-  const m = meetings.find(x => x.id === activeMeetingId) || {};
-  const date = LS.raw('nana_' + activeMeetingId + '_date', m.date || '');
-  const attendees = LS.raw('nana_' + activeMeetingId + '_attendees', '');
-  const notes = LS.raw('nana_' + activeMeetingId + '_notes', '');
-  const next = LS.raw('nana_' + activeMeetingId + '_next', '');
-  const todosArr = LS.get('nana_' + activeMeetingId + '_todos', []);
-
-  let text = '═══════════════════════════════════════\n';
-  text += '  ACTA DE REUNIÓN — JUNTA N.A.N.A.\n';
-  text += '═══════════════════════════════════════\n\n';
-  text += 'Reunión:   ' + (m.name || '') + '\n';
-  text += 'Fecha:     ' + formatDate(date) + '\n';
-  if (attendees) text += 'Asistentes:\n' + attendees + '\n';
-  text += '\n───────────────────────────────────────\n';
-  text += '  APUNTES Y DECISIONES\n';
-  text += '───────────────────────────────────────\n';
-  text += (notes || '(Sin apuntes registrados)') + '\n';
-
-  if (todosArr.length) {
-    text += '\n───────────────────────────────────────\n';
-    text += '  TAREAS (TO-DO)\n';
-    text += '───────────────────────────────────────\n';
-    todosArr.forEach(t => { text += (t.done ? '[✓] ' : '[ ] ') + t.text + '\n'; });
-  }
-
-  if (next) {
-    text += '\n───────────────────────────────────────\n';
-    text += '  PRÓXIMA REUNIÓN\n';
-    text += '───────────────────────────────────────\n';
-    text += next + '\n';
-  }
-
-  text += '\n═══════════════════════════════════════\n';
-  return text;
-}
-
-function openExportModal() {
-  document.getElementById('export-content').textContent = buildActaText();
-  document.getElementById('export-modal').classList.add('open');
-}
-function closeExport() { document.getElementById('export-modal').classList.remove('open'); }
-
-function copyActa() {
-  const text = document.getElementById('export-content').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert('¡Acta copiada al portapapeles! Puedes pegarla en un correo o documento.');
-  }).catch(() => {
-    alert('Selecciona el texto del acta manualmente y cópialo con Ctrl+C.');
-  });
-}
-
-function printActa() {
-  const text = buildActaText();
-  const win = window.open('', '_blank');
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-    <title>Acta N.A.N.A.</title>
-    <style>body{font-family:monospace;padding:3rem;font-size:14px;line-height:1.7;color:#2c3e50}pre{white-space:pre-wrap}</style>
-    </head><body><pre>${text}</pre></body></html>`);
-  win.document.close();
-  win.focus();
-  setTimeout(() => win.print(), 500);
-}
-
-function toggleFullscreen() {
-  const el = document.getElementById('meeting-view');
-  if (!document.fullscreenElement) el.requestFullscreen().catch(() => {});
-  else document.exitFullscreen();
-}
-
-// ─── KEYBOARD ────────────────────────────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeExport(); closeSettings(); }
-});
-document.getElementById('meeting-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
-document.getElementById('export-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeExport(); });
-document.getElementById('settings-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSettings(); });
-
-// ─── SETTINGS ─────────────────────────────────────
-function openSettings() {
-  const saved = LS.raw('nana_google_client_id', '');
-  document.getElementById('settings-client-id').value = saved;
-  document.getElementById('settings-modal').classList.add('open');
-}
-function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
-function saveSettings() {
-  const clientId = document.getElementById('settings-client-id').value.trim();
-  if (!clientId) { alert('Introduce el Client ID.'); return; }
-  LS.setRaw('nana_google_client_id', clientId);
-  closeSettings();
-  initGoogleAuth(clientId);
-}
-
-// ─── GOOGLE AUTH ──────────────────────────────────
-function initGoogleAuth(clientId) {
-  if (!clientId || typeof google === 'undefined') return;
-  try {
-    const client = google.accounts.oauth2.initTokenClient({
-      client_id: clientId,
-      scope: 'https://www.googleapis.com/auth/tasks',
-      callback: (response) => {
-        if (response.access_token) {
-          gAccessToken = response.access_token;
-          document.getElementById('gtasks-btn').style.display = 'inline-flex';
-          alert('¡Conectado con Google! Ahora puedes enviar las tareas a Google Tasks.');
-        }
-      }
-    });
-    // Store client for later use
-    window._gTasksClient = client;
-    // If already authenticated before (token in session), show button directly
-    if (gAccessToken) document.getElementById('gtasks-btn').style.display = 'inline-flex';
-  } catch(e) {
-    console.error('Google auth init error:', e);
-  }
-}
-
-function connectGoogle() {
-  const clientId = LS.raw('nana_google_client_id', '');
-  if (!clientId) { openSettings(); return; }
-  if (!window._gTasksClient) { initGoogleAuth(clientId); return; }
-  window._gTasksClient.requestAccessToken();
-}
-
-async function sendToGoogleTasks() {
-  if (!gAccessToken) {
-    connectGoogle();
-    return;
-  }
-  const pendingTodos = todos.filter(t => !t.done);
-  if (!pendingTodos.length) { alert('No hay tareas pendientes para enviar.'); return; }
-
-  const meetings = getMeetings();
-  const m = meetings.find(x => x.id === activeMeetingId) || {};
-  const listTitle = 'NANA - ' + (m.name || 'Reunión');
-
-  try {
-    // 1. Create task list
-    const listRes = await fetch('https://tasks.googleapis.com/tasks/v1/users/@me/lists', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + gAccessToken, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: listTitle })
-    });
-    const list = await listRes.json();
-    if (!list.id) throw new Error('No se pudo crear la lista.');
-
-    // 2. Create each pending task
-    let created = 0;
-    for (const t of pendingTodos) {
-      const res = await fetch('https://tasks.googleapis.com/tasks/v1/lists/' + list.id + '/tasks', {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + gAccessToken, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: t.text, notes: 'De la reunión: ' + (m.name || '') })
-      });
-      if ((await res.json()).id) created++;
-    }
-
-    alert('✅ ' + created + ' tarea(s) enviadas a Google Tasks en la lista "' + listTitle + '".');
-  } catch(e) {
-    console.error(e);
-    alert('Error al conectar con Google Tasks. El token puede haber expirado. Vuelve a conectar desde Configuración.');
-    gAccessToken = null;
-    document.getElementById('gtasks-btn').style.display = 'none';
-  }
-}
-
-// ─── EXPORT (mejorado) ────────────────────────────
-function buildActaText() {
-  const meetings = getMeetings();
-  const m = meetings.find(x => x.id === activeMeetingId) || {};
-  const date    = LS.raw('nana_' + activeMeetingId + '_date', m.date || '');
-  const atts    = LS.raw('nana_' + activeMeetingId + '_attendees', '');
-  const notes   = LS.raw('nana_' + activeMeetingId + '_notes', '');
-  const next    = LS.raw('nana_' + activeMeetingId + '_next', '');
-  const todosArr = LS.get('nana_' + activeMeetingId + '_todos', []);
-  const pending  = todosArr.filter(t => !t.done);
-  const done     = todosArr.filter(t => t.done);
-
-  let text = '═══════════════════════════════════════\n';
-  text += '   ACTA DE REUNIÓN — JUNTA N.A.N.A.\n';
-  text += '═══════════════════════════════════════\n\n';
-  text += 'Reunión:    ' + (m.name || '—') + '\n';
-  text += 'Fecha:      ' + formatDate(date) + '\n';
-  text += 'Generado:   ' + new Date().toLocaleString('es-ES') + '\n';
-
-  if (atts) {
-    text += '\n── ASISTENTES ──────────────────────────\n';
-    text += atts + '\n';
-  }
-
-  text += '\n── APUNTES Y DECISIONES ───────────────\n';
-  text += (notes || '(Sin apuntes registrados)') + '\n';
-
-  if (pending.length) {
-    text += '\n── TAREAS PENDIENTES ───────────────────\n';
-    pending.forEach(t => { text += '  [ ] ' + t.text + '\n'; });
-  }
-  if (done.length) {
-    text += '\n── TAREAS COMPLETADAS ──────────────────\n';
-    done.forEach(t => { text += '  [✓] ' + t.text + '\n'; });
-  }
-
-  if (next) {
-    text += '\n── PRÓXIMA REUNIÓN ─────────────────────\n';
-    text += next + '\n';
-  }
-
-  text += '\n═══════════════════════════════════════\n';
-  text += '  Total tareas: ' + todosArr.length + ' (' + done.length + ' hechas, ' + pending.length + ' pendientes)\n';
-  text += '═══════════════════════════════════════\n';
-  return text;
-}
-
-function openExportModal() {
-  document.getElementById('export-content').textContent = buildActaText();
-  document.getElementById('export-modal').classList.add('open');
-}
-function closeExport() { document.getElementById('export-modal').classList.remove('open'); }
-
-function copyActa() {
-  navigator.clipboard.writeText(document.getElementById('export-content').textContent)
-    .then(() => alert('¡Copiado! Pégalo en un email o documento Word/Google Docs.'))
-    .catch(() => alert('Selecciona el texto y cópialo con Ctrl+C.'));
-}
-
-function printActa() {
-  const text = buildActaText();
-  const m = getMeetings().find(x => x.id === activeMeetingId) || {};
-  const win = window.open('', '_blank');
-  win.document.write(`<!DOCTYPE html><html lang="es"><head>
-    <meta charset="UTF-8"><title>Acta — ${m.name || 'N.A.N.A.'}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap y Siguientes Pasos - Asociación N.A.N.A.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-      body { font-family: Georgia, serif; max-width: 700px; margin: 3rem auto; color: #2c3e50; line-height: 1.7; }
-      h1 { color: #1e4b6e; border-bottom: 3px solid #e67e22; padding-bottom: 0.5rem; }
-      pre { white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 13px; background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #e67e22; }
-      @media print { body { margin: 1cm; } }
-    </style></head><body>
-    <h1>Acta de Reunión &mdash; N.A.N.A.</h1>
-    <pre>${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
-    </body></html>`);
-  win.document.close();
-  setTimeout(() => win.print(), 500);
-}
+        body { font-family: 'Poppins', sans-serif; }
+        .timeline-line {
+            position: absolute;
+            left: 24px;
+            top: 24px;
+            bottom: 24px;
+            width: 4px;
+            background: #e2e8f0;
+        }
+        @media (min-width: 768px) {
+            .timeline-line {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-teal-100 selection:text-teal-800">
 
-function toggleFullscreen() {
-  const el = document.getElementById('meeting-view');
-  if (!document.fullscreenElement) el.requestFullscreen().catch(() => {});
-  else document.exitFullscreen();
-}
+    <!-- Header / Hero Section -->
+    <header class="bg-[#275d85] text-white py-12 px-6 shadow-lg relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-10">
+            <i class="fa-solid fa-infinity text-9xl"></i>
+        </div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="inline-block bg-[#5bc2bd] text-slate-900 text-xs font-bold uppercase px-3 py-1 rounded-full mb-3 tracking-wider">Asociación N.A.N.A. (Sant Boi)</span>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Hoja de Ruta y Plan de Acción</h1>
+            <p class="text-slate-200 text-base md:text-lg max-w-2xl mx-auto">Guía detallada para la Junta Directiva: Trámites administrativos, plataforma web, captación y el objetivo del Casal de Verano.</p>
+        </div>
+    </header>
 
-// ─── INIT ─────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  renderHome();
-  const savedClientId = LS.raw('nana_google_client_id', '');
-  if (savedClientId) {
-    // Delay to let Google script load
-    setTimeout(() => initGoogleAuth(savedClientId), 1500);
-  }
-});
-</script>
-</body>
-</html>
+    <!-- Main Timeline Container -->
+    <main class="max-w-5xl mx-auto px-4 py-16">
+        <div class="relative">
+            <!-- Central Line -->
+            <div class="timeline-line"></div>
 
+            <!-- Milestone 1: Administrativa -->
+            <div class="mb-12 relative flex flex-col md:flex-row items-center">
+                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-[#275d85] text-white shadow-md z-10 absolute left-0 md:left-1/2 md:-translate-x-1/2">
+                    <i class="fa-solid fa-file-shield text-lg"></i>
+                </div>
+                <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 w-full pl-4 md:pl-0">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <span class="text-xs font-bold text-teal-600 uppercase tracking-wider block mb-1">Fase 1 · Inmediata (Octubre 2026)</span>
+                        <h3 class="text-xl font-bold text-[#275d85] mb-3">Trámites Administrativos y Legales</h3>
+                        <p class="text-sm text-slate-600 mb-4">Consolidación formal y fiscal de la entidad ante las administraciones públicas.</p>
+                        <ul class="space-y-2 text-sm text-slate-700">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Resolución Generalitat:</b> Recepción del número oficial de registro.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>NIF Definitivo:</b> Solicitud en la Agencia Tributaria (Modelo 036).</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Certificado Digital FNMT:</b> Representación legal telemática.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Cuenta Bancaria:</b> Apertura a nombre de la asociación.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>RGPD / LOPD:</b> Registro de Actividades de Tratamiento (RAT).</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Milestone 2: Digital y Comunidad -->
+            <div class="mb-12 relative flex flex-col md:flex-row-reverse items-center">
+                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-[#5bc2bd] text-slate-900 shadow-md z-10 absolute left-0 md:left-1/2 md:-translate-x-1/2">
+                    <i class="fa-solid fa-laptop-code text-lg"></i>
+                </div>
+                <div class="ml-16 md:ml-0 md:w-1/2 md:pl-12 w-full pl-4 md:pl-0">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <span class="text-xs font-bold text-[#275d85] uppercase tracking-wider block mb-1">Fase 2 · Octubre - Noviembre 2026</span>
+                        <h3 class="text-xl font-bold text-[#275d85] mb-3">Plataforma Web y Sondeo Familiar</h3>
+                        <p class="text-sm text-slate-600 mb-4">Lanzamiento del ecosistema digital, captación de base social y sondeo de necesidades.</p>
+                        <ul class="space-y-2 text-sm text-slate-700">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>GitHub & Cloud Code:</b> Despliegue de la web informativa y foro MVP.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Sondeo de Casal:</b> Lanzamiento del formulario para dimensionar plazas y horarios.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Campaña WhatsApp:</b> Difusión en redes y grupos locales de familias.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Captación de Socios:</b> Distinguir entre simpatizantes y socios de pleno derecho.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Milestone 3: Casal y Ayuntamiento -->
+            <div class="mb-12 relative flex flex-col md:flex-row items-center">
+                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-[#275d85] text-white shadow-md z-10 absolute left-0 md:left-1/2 md:-translate-x-1/2">
+                    <i class="fa-solid fa-sun text-lg"></i>
+                </div>
+                <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 w-full pl-4 md:pl-0">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <span class="text-xs font-bold text-teal-600 uppercase tracking-wider block mb-1">Fase 3 · Diciembre 2026 - Febrero 2027</span>
+                        <h3 class="text-xl font-bold text-[#275d85] mb-3">Proyecto Casal y Negociación Institucional</h3>
+                        <p class="text-sm text-slate-600 mb-4">Presentación formal del proyecto al Ayuntamiento de Sant Boi y búsqueda de recursos.</p>
+                        <ul class="space-y-2 text-sm text-slate-700">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Dossier del Casal:</b> Redacción técnica (ratios 1:1 / 1:2, objetivos y espacios).</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Ronda Ayuntament:</b> Reuniones con Serveis Socials y Regidoria d'Educació.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Cesión de Espacios:</b> Solicitud de colegio público o centro municipal adaptado.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Proveedores:</b> Solicitud de presupuestos a empresas de ocio inclusivo.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Milestone 4: Operativa y Ejecución -->
+            <div class="relative flex flex-col md:flex-row-reverse items-center">
+                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-[#5bc2bd] text-slate-900 shadow-md z-10 absolute left-0 md:left-1/2 md:-translate-x-1/2">
+                    <i class="fa-solid fa-rocket text-lg"></i>
+                </div>
+                <div class="ml-16 md:ml-0 md:w-1/2 md:pl-12 w-full pl-4 md:pl-0">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <span class="text-xs font-bold text-[#275d85] uppercase tracking-wider block mb-1">Fase 4 · Marzo - Agosto 2027</span>
+                        <h3 class="text-xl font-bold text-[#275d85] mb-3">Inscripciones, Contratación y Ejecución</h3>
+                        <p class="text-sm text-slate-600 mb-4">Apertura oficial de plazas, gestión de ayudas y desarrollo del casal de verano.</p>
+                        <ul class="space-y-2 text-sm text-slate-700">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Inscripciones:</b> Prioridad absoluta para socios de pleno derecho.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Selección de Personal:</b> Contratación de monitores especializados.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Becas y Ayudas:</b> Tramitación de subvenciones individuales para familias.</span></li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-teal-500 mt-1"></i><span><b>Casal N.A.N.A.:</b> Apertura durante los meses de julio y agosto.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
