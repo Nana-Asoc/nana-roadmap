@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>N.A.N.A. - Portal Junta Directiva</title>
+<title>N.A.N.A. — Portal Junta Directiva</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -11,7 +11,6 @@
   --primary: #1e4b6e;
   --primary-light: #306b99;
   --secondary: #e67e22;
-  --secondary-light: #fdf2e9;
   --accent: #27ae60;
   --danger: #e74c3c;
   --bg: #f0f4f8;
@@ -20,226 +19,159 @@
   --muted: #7f8c8d;
   --border: #dce3ea;
   --note-bg: #fffdf5;
-  --speed: 0.4s;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-/* ===== VIEWS ===== */
+/* VIEWS */
 .view { display: none; }
 .view.active { display: block; }
+#meeting-view.active { display: flex; }
 
-/* ===== HOME ===== */
-#home { min-height: 100vh; }
-
+/* HEADER */
 .home-header {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-  padding: 3rem 4rem 4rem;
-  color: white;
-  position: relative;
-  overflow: hidden;
+  padding: 2.5rem 4rem 5rem;
+  color: white; position: relative; overflow: hidden;
 }
 .home-header::after {
-  content: '';
-  position: absolute;
-  bottom: -60px; left: 0; right: 0;
-  height: 120px;
-  background: var(--bg);
+  content: ''; position: absolute; bottom: -60px; left: 0; right: 0;
+  height: 120px; background: var(--bg);
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
 }
-.home-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: -1px; }
+.home-header h1 { font-size: 2.5rem; font-weight: 800; }
 .home-header h1 span { color: var(--secondary); }
-.home-header p { font-size: 1.1rem; opacity: 0.8; margin-top: 0.5rem; }
+.home-header p { opacity: 0.75; margin-top: 0.4rem; font-size: 1rem; }
 
 .home-body { padding: 2rem 4rem 4rem; max-width: 1200px; margin: 0 auto; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+.section-header h2 { font-size: 1.4rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
 
-.home-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; }
-.home-top h2 { font-size: 1.6rem; color: var(--primary); }
-
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.25s ease; }
+/* BUTTONS */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 50px; font-family: 'Poppins'; font-size: 0.95rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s ease; text-decoration: none; }
 .btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(30,75,110,0.25); }
+.btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); box-shadow: 0 6px 15px rgba(30,75,110,0.25); }
 .btn-secondary { background: var(--secondary); color: white; }
-.btn-secondary:hover { background: #d67118; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(230,126,34,0.25); }
+.btn-secondary:hover { background: #d67118; transform: translateY(-1px); }
+.btn-accent { background: var(--accent); color: white; }
+.btn-accent:hover { background: #219a52; }
 .btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
 .btn-outline:hover { background: var(--primary); color: white; }
-.btn-danger { background: var(--danger); color: white; font-size: 0.85rem; padding: 8px 14px; }
+.btn-danger { background: var(--danger); color: white; }
 .btn-danger:hover { background: #c0392b; }
-.btn-sm { font-size: 0.85rem; padding: 8px 16px; }
+.btn-sm { font-size: 0.82rem; padding: 7px 14px; }
+.btn-ghost { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 4px 8px; }
+.btn-ghost:hover { color: var(--danger); }
 
-.meetings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-
+/* CARDS GRID */
+.meetings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
 .meeting-card {
-  background: white; border-radius: 16px; padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid var(--border);
-  transition: all 0.25s ease;
-  cursor: pointer;
+  background: white; border-radius: 16px; border: 1px solid var(--border);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.05); overflow: hidden;
+  transition: all 0.25s ease; display: flex; flex-direction: column;
 }
-.meeting-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-.meeting-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-.meeting-date-badge {
-  background: var(--secondary-light); color: var(--secondary);
-  font-weight: 700; font-size: 0.9rem; padding: 5px 12px; border-radius: 20px;
-}
-.meeting-card h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 0.5rem; }
-.meeting-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.5; }
-.meeting-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-.meeting-meta { font-size: 0.85rem; color: var(--muted); }
-.tag { display: inline-block; background: #e8f4fd; color: var(--primary); font-size: 0.78rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; margin-right: 4px; }
+.meeting-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.card-top { padding: 1.3rem 1.3rem 0; }
+.card-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.8rem; }
+.badge { font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.badge-date { background: #e8f4fd; color: var(--primary); }
+.badge-acta { background: #fef9e7; color: #d4ac0d; }
+.badge-todo { background: #e9f7ef; color: var(--accent); }
+.card-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; }
+.card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+.card-actions { display: flex; gap: 0.6rem; padding: 1rem 1.3rem; margin-top: auto; border-top: 1px solid var(--border); }
+.card-delete { margin-left: auto; }
 
-.empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
-.empty-state i { font-size: 4rem; margin-bottom: 1rem; opacity: 0.3; display: block; }
-.empty-state p { font-size: 1.1rem; }
+.empty-state { grid-column: 1/-1; text-align: center; padding: 4rem 2rem; color: var(--muted); }
+.empty-state i { font-size: 4rem; display: block; margin-bottom: 1rem; opacity: 0.25; }
 
-/* ===== MODAL ===== */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 999; opacity: 0; pointer-events: none;
-  transition: opacity 0.3s ease;
-}
+/* ACTA HISTORY */
+.history-section { margin-top: 2.5rem; background: white; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 3px 12px rgba(0,0,0,0.05); overflow: hidden; }
+.history-header { padding: 1rem 1.5rem; background: var(--primary); color: white; font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.history-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.history-entry { border-left: 4px solid var(--secondary); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; background: var(--bg); }
+.history-entry-title { font-weight: 700; color: var(--primary); font-size: 0.95rem; margin-bottom: 0.5rem; }
+.history-entry-notes { font-size: 0.88rem; color: var(--text); line-height: 1.6; white-space: pre-wrap; }
+.history-entry-todos { margin-top: 0.8rem; font-size: 0.85rem; }
+.history-entry-todos ul { list-style: none; padding: 0; }
+.history-entry-todos li { display: flex; align-items: center; gap: 6px; color: var(--text); padding: 2px 0; }
+.history-entry-todos li.done { color: var(--muted); text-decoration: line-through; }
+.history-entry-todos li::before { content: '◦'; color: var(--secondary); font-size: 1.2rem; }
+.history-entry-todos li.done::before { content: '✓'; color: var(--accent); }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
 .modal-overlay.open { opacity: 1; pointer-events: auto; }
-.modal { background: white; border-radius: 20px; padding: 2.5rem; width: 500px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s ease; }
+.modal { background: white; border-radius: 20px; padding: 2.5rem; width: 560px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s; max-height: 90vh; overflow-y: auto; }
 .modal-overlay.open .modal { transform: scale(1); }
-.modal h2 { color: var(--primary); margin-bottom: 1.5rem; }
+.modal h2 { color: var(--primary); margin-bottom: 0.3rem; }
+.modal .modal-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.5rem; line-height: 1.5; }
 .form-group { margin-bottom: 1.2rem; }
-.form-group label { display: block; font-weight: 600; color: var(--primary); margin-bottom: 6px; font-size: 0.95rem; }
-.form-group input, .form-group textarea {
-  width: 100%; padding: 12px; border: 2px solid var(--border);
-  border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 1rem;
-  transition: border-color 0.2s; outline: none;
-}
+.form-group label { display: block; font-weight: 600; color: var(--primary); margin-bottom: 5px; font-size: 0.9rem; }
+.form-group label small { font-weight: 400; color: var(--muted); }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 11px 13px; border: 2px solid var(--border); border-radius: 10px; font-family: 'Poppins'; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
 .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
-.form-group textarea { resize: vertical; min-height: 90px; }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.hint-box { background: #e8f4fd; border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 0.8rem 1rem; font-size: 0.85rem; color: var(--primary); line-height: 1.6; margin-bottom: 1.2rem; }
+.hint-box code { background: rgba(30,75,110,0.1); padding: 2px 5px; border-radius: 4px; font-size: 0.85rem; }
 .modal-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
 
-/* ===== PRESENTATION VIEW ===== */
-#presentation { height: 100vh; display: none; flex-direction: column; overflow: hidden; }
-#presentation.active { display: flex; }
-
-.pres-header {
-  background: white; padding: 0.8rem 2rem;
+/* MEETING VIEW */
+#meeting-view { height: 100vh; flex-direction: column; overflow: hidden; }
+.meeting-header {
+  background: white; padding: 0.7rem 1.5rem;
   display: flex; align-items: center; justify-content: space-between;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06); z-index: 50; flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06); z-index: 50; flex-shrink: 0; gap: 1rem;
 }
-.pres-header-title { font-weight: 700; color: var(--primary); }
-.pres-header-date { font-size: 0.85rem; color: var(--muted); }
-.pres-header-actions { display: flex; gap: 0.8rem; align-items: center; }
+.meeting-header-info h3 { font-size: 1rem; font-weight: 700; color: var(--primary); }
+.meeting-header-info p { font-size: 0.78rem; color: var(--muted); }
+.meeting-header-actions { display: flex; gap: 0.6rem; align-items: center; flex-shrink: 0; }
 
-.pres-body { display: flex; flex: 1; overflow: hidden; }
+.meeting-body { display: flex; flex: 1; overflow: hidden; }
 
-/* Slides area */
-.slides-area { flex: 1; position: relative; overflow: hidden; }
-.slide {
-  position: absolute; inset: 0;
-  padding: 3rem 5rem;
-  opacity: 0; transform: translateX(40px);
-  transition: opacity var(--speed) ease, transform var(--speed) ease;
-  pointer-events: none;
-  display: flex; flex-direction: column; justify-content: center;
-  background: white;
-}
-.slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 10; }
-.slide.previous { transform: translateX(-40px); }
-.slide.slide-cover { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; text-align: center; align-items: center; }
-.slide.slide-cover h1 { color: white; font-size: 3.5rem; }
-.slide.slide-cover .subtitle { color: rgba(255,255,255,0.8); font-size: 1.3rem; }
-.slide.slide-cover .cover-date { color: var(--secondary); font-size: 1.2rem; font-weight: 600; margin-top: 1rem; }
+/* Embed area */
+.embed-area { flex: 1; background: #1a1a2e; display: flex; align-items: center; justify-content: center; position: relative; }
+.embed-area iframe { width: 100%; height: 100%; border: none; }
+.embed-placeholder { text-align: center; color: rgba(255,255,255,0.5); padding: 3rem; }
+.embed-placeholder i { font-size: 4rem; display: block; margin-bottom: 1rem; }
+.embed-placeholder p { font-size: 1rem; line-height: 1.6; }
 
-.slide-inner { max-width: 1100px; width: 100%; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-h2.slide-title { font-size: 2.2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; line-height: 1.2; }
-h2.slide-title::after { content: ''; display: block; width: 70px; height: 5px; background: var(--secondary); border-radius: 3px; margin-top: 10px; }
-.slide-subtitle { font-size: 1rem; color: var(--muted); margin-bottom: 1.5rem; }
+/* ACTA PANEL */
+.acta-panel { width: 360px; flex-shrink: 0; background: white; border-left: 1px solid var(--border); display: flex; flex-direction: column; transition: width 0.3s ease, opacity 0.3s ease; overflow: hidden; }
+.acta-panel.hidden { width: 0; opacity: 0; pointer-events: none; }
+.acta-panel-head { background: var(--primary); color: white; padding: 1rem 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.acta-panel-head h4 { font-size: 0.95rem; }
+.acta-panel-body { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: 1.3rem; }
+.acta-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 5px; display: block; }
+.acta-input { width: 100%; border: 2px solid var(--border); border-radius: 8px; padding: 9px; font-family: 'Poppins'; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
+.acta-input:focus { border-color: var(--primary); }
+textarea.acta-input { resize: vertical; min-height: 100px; }
+.acta-panel-footer { padding: 1rem 1.2rem; border-top: 1px solid var(--border); flex-shrink: 0; display: flex; flex-direction: column; gap: 0.6rem; }
 
-.points-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
-.points-list li {
-  font-size: 1rem; display: flex; align-items: flex-start; gap: 1rem;
-  background: var(--bg); padding: 0.9rem; border-radius: 8px;
-  border-left: 4px solid var(--primary-light);
-}
-.points-list li i { color: var(--primary); font-size: 1.2rem; margin-top: 2px; flex-shrink: 0; }
-.points-list li strong { color: var(--primary); font-weight: 600; display: block; }
-
-/* Right notepad */
-.slide-notepad { background: var(--note-bg); border-left: 6px solid var(--secondary); border-radius: 0 14px 14px 0; padding: 1.5rem; display: flex; flex-direction: column; min-height: 350px; }
-.notepad-label { font-size: 0.8rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px dashed rgba(230,126,34,0.3); padding-bottom: 0.5rem; margin-bottom: 1rem; }
-.editable-note {
-  flex: 1; outline: none; font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem; line-height: 1.7; color: var(--text);
-  overflow-y: auto; min-height: 200px;
-}
-.editable-note:empty::before { content: attr(data-placeholder); color: #bbb; font-style: italic; }
-
-/* Side acta panel */
-.acta-panel {
-  width: 340px; flex-shrink: 0;
-  background: white; border-left: 1px solid var(--border);
-  display: flex; flex-direction: column; overflow: hidden;
-}
-.acta-panel.collapsed { width: 0; border: none; overflow: hidden; }
-.acta-header { padding: 1.2rem 1.5rem; background: var(--primary); color: white; font-weight: 700; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-.acta-header span { font-size: 1rem; }
-.acta-toggle-icon { cursor: pointer; }
-.acta-body { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
-.acta-section-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 0.5rem; }
-.acta-textarea {
-  width: 100%; border: 2px solid var(--border); border-radius: 8px;
-  padding: 10px; font-family: 'Poppins'; font-size: 0.9rem;
-  resize: vertical; min-height: 120px; outline: none;
-}
-.acta-textarea:focus { border-color: var(--primary); }
-
-/* Todo list */
-.todo-input-row { display: flex; gap: 8px; }
-.todo-input-row input { flex: 1; border: 2px solid var(--border); border-radius: 8px; padding: 8px 12px; font-family: 'Poppins'; font-size: 0.9rem; outline: none; }
-.todo-input-row input:focus { border-color: var(--primary); }
-.todo-input-row button { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 1.1rem; }
-#todo-list { list-style: none; margin-top: 0.8rem; display: flex; flex-direction: column; gap: 6px; }
-#todo-list li { display: flex; align-items: center; gap: 8px; background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+/* TODO */
+.todo-row { display: flex; gap: 6px; }
+.todo-row input { flex: 1; border: 2px solid var(--border); border-radius: 8px; padding: 8px 10px; font-family: 'Poppins'; font-size: 0.85rem; outline: none; }
+.todo-row input:focus { border-color: var(--primary); }
+.todo-row button { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+#todo-list { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 4px; }
+#todo-list li { display: flex; align-items: center; gap: 7px; background: var(--bg); border-radius: 6px; padding: 7px 9px; }
 #todo-list li.done span { text-decoration: line-through; color: var(--muted); }
-#todo-list li span { flex: 1; font-size: 0.9rem; }
-#todo-list li input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
-.todo-del { color: var(--danger); cursor: pointer; font-size: 0.85rem; }
+#todo-list li span { flex: 1; font-size: 0.85rem; }
+#todo-list li input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+.todo-del { color: var(--danger); cursor: pointer; font-size: 0.8rem; }
 
-/* Nav bar */
-.pres-nav {
-  background: white; border-top: 1px solid var(--border);
-  padding: 0.8rem 2rem; display: flex; align-items: center;
-  justify-content: space-between; flex-shrink: 0;
-}
-.pres-nav .nav-btn {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 20px; border-radius: 50px;
-  border: 2px solid var(--primary); background: white; color: var(--primary);
-  font-family: 'Poppins'; font-size: 0.9rem; font-weight: 600; cursor: pointer;
-  transition: all 0.2s ease;
-}
-.pres-nav .nav-btn:hover:not(:disabled) { background: var(--primary); color: white; }
-.pres-nav .nav-btn:disabled { border-color: var(--border); color: var(--border); cursor: not-allowed; }
-.pres-nav .progress-track { flex: 1; margin: 0 2rem; height: 6px; background: var(--border); border-radius: 3px; position: relative; overflow: hidden; }
-.pres-nav .progress-fill { height: 100%; background: var(--secondary); border-radius: 3px; transition: width var(--speed) ease; }
-.slide-counter { font-size: 0.85rem; font-weight: 600; color: var(--muted); position: absolute; top: -22px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+/* EXPORT MODAL */
+#export-content { white-space: pre-wrap; font-family: monospace; font-size: 0.85rem; background: var(--bg); padding: 1rem; border-radius: 8px; max-height: 300px; overflow-y: auto; border: 1px solid var(--border); line-height: 1.6; }
 
-/* Acta history in home */
-.acta-history { background: white; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 2rem; }
-.acta-history h3 { color: var(--primary); margin-bottom: 1rem; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
-.acta-entry { padding: 1rem; border-radius: 10px; background: var(--bg); margin-bottom: 0.8rem; border-left: 4px solid var(--secondary); }
-.acta-entry h4 { color: var(--primary); font-size: 1rem; margin-bottom: 0.3rem; }
-.acta-entry p { font-size: 0.88rem; color: var(--muted); white-space: pre-wrap; }
-
-/* Mobile */
+/* RESPONSIVE */
 @media (max-width: 900px) {
-  .home-header { padding: 2rem; }
-  .home-header h1 { font-size: 2rem; }
+  .home-header { padding: 2rem 1.5rem 4rem; }
+  .home-header h1 { font-size: 1.8rem; }
   .home-body { padding: 1.5rem; }
-  .home-top { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .acta-panel { width: 100%; border-left: none; border-top: 1px solid var(--border); max-height: 350px; }
-  .pres-body { flex-direction: column; }
-  .slide { padding: 2rem 1.5rem; }
-  .slide-inner { grid-template-columns: 1fr; }
-  .pres-header { padding: 0.8rem 1rem; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .acta-panel { width: 100%; max-height: 50vh; border-left: none; border-top: 1px solid var(--border); }
+  .meeting-body { flex-direction: column; }
+  .embed-area { min-height: 250px; }
 }
 </style>
 </head>
@@ -249,491 +181,483 @@ h2.slide-title::after { content: ''; display: block; width: 70px; height: 5px; b
 <div id="home" class="view active">
   <div class="home-header">
     <h1>Junta Directiva <span>N.A.N.A.</span></h1>
-    <p>Portal de Reuniones y Seguimiento Estratégico 2026-2027</p>
+    <p>Portal de Reuniones, Presentaciones y Actas · 2026-2027</p>
   </div>
-
   <div class="home-body">
-    <div class="home-top">
+    <div class="section-header">
       <h2><i class="fa-solid fa-calendar-days"></i> Reuniones registradas</h2>
-      <button class="btn btn-secondary" onclick="openNewMeetingModal()">
+      <button class="btn btn-secondary" onclick="openNewModal()">
         <i class="fa-solid fa-plus"></i> Nueva Reunión
       </button>
     </div>
-
-    <div class="meetings-grid" id="meetings-grid">
-      <!-- Cards generated by JS -->
-    </div>
-
-    <div id="acta-history-section" class="acta-history" style="display:none;">
-      <h3><i class="fa-solid fa-scroll"></i> Historial de Actas</h3>
-      <div id="acta-history-list"></div>
+    <div class="meetings-grid" id="meetings-grid"></div>
+    <div class="history-section" id="history-section" style="display:none">
+      <div class="history-header"><i class="fa-solid fa-scroll"></i> Historial de Actas</div>
+      <div class="history-body" id="history-body"></div>
     </div>
   </div>
 </div>
 
-<!-- ============ PRESENTATION VIEW ============ -->
-<div id="presentation" class="view">
-
-  <div class="pres-header">
-    <div>
-      <div class="pres-header-title" id="pres-title">Reunión N.A.N.A.</div>
-      <div class="pres-header-date" id="pres-date"></div>
+<!-- ============ MEETING VIEW ============ -->
+<div id="meeting-view" class="view">
+  <div class="meeting-header">
+    <div class="meeting-header-info">
+      <h3 id="mv-title">Reunión</h3>
+      <p id="mv-date"></p>
     </div>
-    <div class="pres-header-actions">
-      <button class="btn btn-sm btn-outline" onclick="toggleActaPanel()">
-        <i class="fa-solid fa-clipboard-list"></i> <span id="acta-btn-label">Acta</span>
+    <div class="meeting-header-actions">
+      <button class="btn btn-sm btn-outline" onclick="toggleActa()" id="acta-toggle-btn">
+        <i class="fa-solid fa-clipboard-list"></i> Acta
       </button>
-      <button class="btn btn-sm btn-outline" onclick="goFullScreen()">
+      <button class="btn btn-sm btn-accent" onclick="openExportModal()">
+        <i class="fa-solid fa-file-export"></i> Exportar Acta
+      </button>
+      <button class="btn btn-sm btn-outline" onclick="toggleFullscreen()">
         <i class="fa-solid fa-expand"></i>
       </button>
-      <button class="btn btn-sm btn-outline" onclick="goHome()">
+      <button class="btn btn-sm btn-primary" onclick="goHome()">
         <i class="fa-solid fa-arrow-left"></i> Inicio
       </button>
     </div>
   </div>
 
-  <div class="pres-body">
-    <div class="slides-area" id="slides-area">
-
-      <!-- Slide 1: Portada -->
-      <div class="slide slide-cover active" id="slide-1">
-        <h1 id="cover-title">Junta Directiva <span style="color:var(--secondary)">N.A.N.A.</span></h1>
-        <p class="subtitle">Planificación Estratégica · Roadmap 2026-2027</p>
-        <p class="cover-date" id="cover-date"></p>
+  <div class="meeting-body">
+    <!-- Presentation embed -->
+    <div class="embed-area" id="embed-area">
+      <div class="embed-placeholder">
+        <i class="fa-solid fa-display"></i>
+        <p>No hay presentación enlazada.<br>Edita la reunión para añadir un enlace de Google Slides.</p>
       </div>
+    </div>
 
-      <!-- Slide 2: Estado Legal -->
-      <div class="slide" id="slide-2">
-        <div class="slide-inner">
-          <div>
-            <h2 class="slide-title">Estado Legal y Burocracia</h2>
-            <p class="slide-subtitle">La base jurídica para operar y recibir subvenciones.</p>
-            <ul class="points-list">
-              <li><i class="fa-solid fa-file-signature"></i><div><strong>Resolución Generalitat:</strong>Estatutos presentados, esperando inscripción definitiva.</div></li>
-              <li><i class="fa-solid fa-id-card"></i><div><strong>NIF Definitivo:</strong>Trámite en Hacienda (AEAT) tras la resolución.</div></li>
-              <li><i class="fa-solid fa-shield-halved"></i><div><strong>Certificado Digital (FNMT):</strong>Indispensable para firma de convenios.</div></li>
-              <li><i class="fa-solid fa-building-columns"></i><div><strong>Cuenta Bancaria Ética:</strong>Apertura en Triodos o Fiare.</div></li>
-            </ul>
-          </div>
-          <div class="slide-notepad">
-            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Notas de esta diapositiva</div>
-            <div class="editable-note" data-slide="2" contenteditable="true" data-placeholder="Apunta acuerdos, responsables..."></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 3: Casal -->
-      <div class="slide" id="slide-3">
-        <div class="slide-inner">
-          <div>
-            <h2 class="slide-title">Casal de Verano Inclusivo 2027</h2>
-            <p class="slide-subtitle">Proyecto fundacional — Julio y Agosto 2027.</p>
-            <ul class="points-list">
-              <li><i class="fa-solid fa-file-contract"></i><div><strong>Dossier Técnico:</strong>Ratios especializados 1:1 o 1:2.</div></li>
-              <li><i class="fa-solid fa-landmark"></i><div><strong>Ayuntamiento:</strong>Regidoria d'Educació — Límite: Diciembre.</div></li>
-              <li><i class="fa-solid fa-school"></i><div><strong>Espacio:</strong>Colegio o centro cívico con accesibilidad universal.</div></li>
-              <li><i class="fa-solid fa-users"></i><div><strong>Monitores:</strong>Formación específica TEA, TDAH, movilidad reducida.</div></li>
-            </ul>
-          </div>
-          <div class="slide-notepad">
-            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Notas de esta diapositiva</div>
-            <div class="editable-note" data-slide="3" contenteditable="true" data-placeholder="Contactos, fechas clave, espacios visitados..."></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 4: Digital -->
-      <div class="slide" id="slide-4">
-        <div class="slide-inner">
-          <div>
-            <h2 class="slide-title">Ecosistema Digital</h2>
-            <p class="slide-subtitle">Web, foro y comunicación de la asociación.</p>
-            <ul class="points-list">
-              <li><i class="fa-solid fa-globe"></i><div><strong>Landing Page:</strong>Formulario de sondeo a familias.</div></li>
-              <li><i class="fa-solid fa-comments"></i><div><strong>Foro Privado:</strong>Login, roles Admin/Socio, foros temáticos.</div></li>
-              <li><i class="fa-solid fa-scale-balanced"></i><div><strong>RGPD:</strong>Datos de menores — política estricta.</div></li>
-            </ul>
-          </div>
-          <div class="slide-notepad">
-            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Notas de esta diapositiva</div>
-            <div class="editable-note" data-slide="4" contenteditable="true" data-placeholder="Dominio, requisitos técnicos, categorías del foro..."></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 5: Socios -->
-      <div class="slide" id="slide-5">
-        <div class="slide-inner">
-          <div>
-            <h2 class="slide-title">Estrategia de Socios</h2>
-            <p class="slide-subtitle">Sostenibilidad económica y crecimiento.</p>
-            <ul class="points-list">
-              <li><i class="fa-solid fa-hand-holding-heart"></i><div><strong>Simpatizante (Gratis):</strong>Newsletter, volumen y representatividad.</div></li>
-              <li><i class="fa-solid fa-star"></i><div><strong>Socio de Pleno Derecho:</strong>Voto, prioridad en actividades, foro privado.</div></li>
-              <li><i class="fa-solid fa-building-ngo"></i><div><strong>Socios Colaboradores:</strong>Empresas y patrocinios RSC.</div></li>
-            </ul>
-          </div>
-          <div class="slide-notepad">
-            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Notas de esta diapositiva</div>
-            <div class="editable-note" data-slide="5" contenteditable="true" data-placeholder="Cuota decidida, fecha de captación..."></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 6: Próximos pasos -->
-      <div class="slide" id="slide-6">
-        <div class="slide-inner">
-          <div>
-            <h2 class="slide-title">Próximos Pasos</h2>
-            <p class="slide-subtitle">Cronograma inmediato para arrancar.</p>
-            <ul class="points-list">
-              <li><i class="fa-solid fa-bolt" style="color:var(--secondary)"></i><div><strong>Esta semana:</strong>Validar formulario y arrancar dossier.</div></li>
-              <li><i class="fa-solid fa-calendar-week"></i><div><strong>En 15 días:</strong>Web visible y confirmar cuenta bancaria.</div></li>
-              <li><i class="fa-solid fa-bullseye" style="color:var(--accent)"></i><div><strong>Noviembre:</strong>Dossier terminado · Cita en el Ayuntamiento.</div></li>
-            </ul>
-          </div>
-          <div class="slide-notepad">
-            <div class="notepad-label"><i class="fa-solid fa-pen"></i> Resumen de acuerdos</div>
-            <div class="editable-note" data-slide="6" contenteditable="true" data-placeholder="Quién hace qué, próxima reunión..."></div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /slides-area -->
-
-    <!-- ACTA PANEL -->
+    <!-- Acta Panel -->
     <div class="acta-panel" id="acta-panel">
-      <div class="acta-header">
-        <span><i class="fa-solid fa-scroll"></i> Acta de Reunión</span>
-        <i class="fa-solid fa-times acta-toggle-icon" onclick="toggleActaPanel()"></i>
+      <div class="acta-panel-head">
+        <h4><i class="fa-solid fa-scroll"></i> Acta de Reunión</h4>
+        <button class="btn-ghost" style="color:rgba(255,255,255,0.7)" onclick="toggleActa()"><i class="fa-solid fa-times"></i></button>
       </div>
-      <div class="acta-body">
+      <div class="acta-panel-body">
+
         <div>
-          <div class="acta-section-label"><i class="fa-solid fa-calendar"></i> Fecha</div>
-          <input type="date" id="acta-date" class="acta-textarea" style="min-height:auto;resize:none;" oninput="saveActaField('date', this.value)">
+          <span class="acta-label"><i class="fa-regular fa-calendar"></i> Fecha</span>
+          <input type="date" id="acta-date" class="acta-input" style="min-height:auto" oninput="saveActa('date',this.value)">
         </div>
+
         <div>
-          <div class="acta-section-label"><i class="fa-solid fa-pen-to-square"></i> Apuntes Generales</div>
-          <textarea id="acta-notes" class="acta-textarea" placeholder="Temas tratados, decisiones clave..." oninput="saveActaField('notes', this.value)"></textarea>
+          <span class="acta-label"><i class="fa-solid fa-users"></i> Asistentes</span>
+          <textarea id="acta-attendees" class="acta-input" style="min-height:70px" placeholder="Nombres de los directivos presentes..." oninput="saveActa('attendees',this.value)"></textarea>
         </div>
+
         <div>
-          <div class="acta-section-label"><i class="fa-solid fa-list-check"></i> Tareas (To-Do)</div>
-          <div class="todo-input-row">
-            <input type="text" id="todo-input" placeholder="Añadir tarea..." onkeydown="if(event.key==='Enter') addTodo()">
+          <span class="acta-label"><i class="fa-solid fa-pen-to-square"></i> Apuntes y Decisiones</span>
+          <textarea id="acta-notes" class="acta-input" placeholder="Temas tratados, acuerdos, votaciones..." oninput="saveActa('notes',this.value)"></textarea>
+        </div>
+
+        <div>
+          <span class="acta-label"><i class="fa-solid fa-list-check"></i> To-Do (Tareas)</span>
+          <div class="todo-row">
+            <input type="text" id="todo-input" placeholder="Nueva tarea..." onkeydown="if(event.key==='Enter') addTodo()">
             <button onclick="addTodo()"><i class="fa-solid fa-plus"></i></button>
           </div>
           <ul id="todo-list"></ul>
         </div>
+
         <div>
-          <div class="acta-section-label"><i class="fa-solid fa-user-check"></i> Asistentes</div>
-          <textarea id="acta-attendees" class="acta-textarea" style="min-height:80px;" placeholder="Nombres de los directivos presentes..." oninput="saveActaField('attendees', this.value)"></textarea>
+          <span class="acta-label"><i class="fa-solid fa-comment-dots"></i> Próxima reunión</span>
+          <input type="text" id="acta-next" class="acta-input" placeholder="Fecha y lugar propuesto..." oninput="saveActa('next',this.value)">
         </div>
+
+      </div>
+      <div class="acta-panel-footer">
+        <button class="btn btn-accent" style="width:100%;justify-content:center" onclick="openExportModal()">
+          <i class="fa-solid fa-file-export"></i> Exportar Acta
+        </button>
       </div>
     </div>
-
-  </div><!-- /pres-body -->
-
-  <div class="pres-nav">
-    <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>
-      <i class="fa-solid fa-arrow-left"></i> Anterior
-    </button>
-    <div class="progress-track">
-      <div class="slide-counter" id="slide-counter">Diapositiva 1 de 6</div>
-      <div class="progress-fill" id="progress-fill"></div>
-    </div>
-    <button class="nav-btn" id="next-btn" onclick="nextSlide()">
-      Siguiente <i class="fa-solid fa-arrow-right"></i>
-    </button>
   </div>
+</div>
 
-</div><!-- /presentation -->
-
-<!-- ============ MODAL: Nueva Reunión ============ -->
-<div class="modal-overlay" id="new-meeting-modal">
+<!-- ============ MODAL: Nueva/Editar Reunión ============ -->
+<div class="modal-overlay" id="meeting-modal">
   <div class="modal">
-    <h2><i class="fa-solid fa-plus" style="color:var(--secondary)"></i> Nueva Reunión</h2>
+    <h2 id="modal-title"><i class="fa-solid fa-plus" style="color:var(--secondary)"></i> Nueva Reunión</h2>
+    <p class="modal-sub">Crea un espacio para esta reunión. Podrás vincular tu presentación de Google Slides y registrar el acta.</p>
+
     <div class="form-group">
       <label>Nombre de la reunión</label>
-      <input type="text" id="modal-name" placeholder="Ej: Reunión Octubre 2026, Junta Ordinaria nº2...">
+      <input type="text" id="m-name" placeholder="Ej: Reunión Fundacional Octubre 2026">
     </div>
     <div class="form-group">
       <label>Fecha</label>
-      <input type="date" id="modal-date">
+      <input type="date" id="m-date">
     </div>
     <div class="form-group">
-      <label>Descripción breve (opcional)</label>
-      <textarea id="modal-desc" placeholder="Temas principales a tratar..."></textarea>
+      <label>Descripción breve <small>(opcional)</small></label>
+      <textarea id="m-desc" placeholder="Temas principales a tratar en esta reunión..."></textarea>
     </div>
+    <div class="form-group">
+      <label>Enlace de Google Slides <small>(opcional, puedes añadirlo después)</small></label>
+      <div class="hint-box">
+        <strong>¿Cómo obtener el enlace?</strong><br>
+        En Google Slides: <strong>Archivo → Publicar en la web → Insertar</strong> y copia la URL del atributo <code>src</code> del iframe.
+      </div>
+      <input type="url" id="m-embed" placeholder="https://docs.google.com/presentation/d/.../embed?...">
+    </div>
+
     <div class="modal-actions">
       <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-secondary" onclick="createMeeting()"><i class="fa-solid fa-check"></i> Crear y Abrir</button>
+      <button class="btn btn-secondary" onclick="saveMeeting()"><i class="fa-solid fa-check"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Exportar Acta ============ -->
+<div class="modal-overlay" id="export-modal">
+  <div class="modal">
+    <h2><i class="fa-solid fa-file-export" style="color:var(--accent)"></i> Exportar Acta</h2>
+    <p class="modal-sub" style="margin-bottom:1rem">Copia el texto del acta o imprime esta página como PDF.</p>
+    <pre id="export-content"></pre>
+    <div class="modal-actions" style="margin-top:1rem">
+      <button class="btn btn-outline" onclick="closeExport()">Cerrar</button>
+      <button class="btn btn-primary" onclick="copyActa()"><i class="fa-solid fa-copy"></i> Copiar texto</button>
+      <button class="btn btn-accent" onclick="printActa()"><i class="fa-solid fa-print"></i> Imprimir / PDF</button>
     </div>
   </div>
 </div>
 
 <script>
 // =====================================================
-//  N.A.N.A. Portal — App Logic
+//  N.A.N.A. Portal — v3
 // =====================================================
 
 let activeMeetingId = null;
-let actaPanelOpen = true;
-let currentSlide = 0;
-const TOTAL_SLIDES = 6;
+let editingId = null;
 let todos = [];
+let actaVisible = true;
 
-// --- Sessions ---
-function getSessions() {
-  return JSON.parse(localStorage.getItem('nana_meetings') || '[]');
-}
-function saveSessions(arr) {
-  localStorage.setItem('nana_meetings', JSON.stringify(arr));
+// ─── Persistence helpers ───────────────────────────
+const LS = {
+  get: (k, def) => { try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch { return def; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+  raw: (k, def) => localStorage.getItem(k) ?? def,
+  setRaw: (k, v) => localStorage.setItem(k, v),
+  del: (k) => localStorage.removeItem(k)
+};
+
+function getMeetings() { return LS.get('nana_meetings', []); }
+function saveMeetings(arr) { LS.set('nana_meetings', arr); }
+
+function formatDate(d) {
+  if (!d) return '—';
+  const date = new Date(d + 'T12:00:00');
+  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-// --- Home ---
+// ─── HOME ─────────────────────────────────────────
 function renderHome() {
+  const meetings = getMeetings().sort((a,b) => (b.date||'').localeCompare(a.date||''));
   const grid = document.getElementById('meetings-grid');
-  const sessions = getSessions();
+  grid.innerHTML = '';
 
-  if (sessions.length === 0) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+  if (meetings.length === 0) {
+    grid.innerHTML = `<div class="empty-state">
       <i class="fa-solid fa-calendar-xmark"></i>
-      <p>Aún no hay reuniones registradas.<br>Pulsa <strong>Nueva Reunión</strong> para empezar.</p>
+      <p>Aún no hay reuniones.<br>Pulsa <strong>Nueva Reunión</strong> para empezar.</p>
     </div>`;
-    document.getElementById('acta-history-section').style.display = 'none';
+    document.getElementById('history-section').style.display = 'none';
     return;
   }
 
-  grid.innerHTML = '';
-  sessions.sort((a,b) => b.date.localeCompare(a.date)).forEach(s => {
-    const notes = localStorage.getItem('nana_' + s.id + '_acta_notes') || '';
-    const attendees = localStorage.getItem('nana_' + s.id + '_acta_attendees') || '';
-    const todosArr = JSON.parse(localStorage.getItem('nana_' + s.id + '_todos') || '[]');
-    const doneTodos = todosArr.filter(t => t.done).length;
+  meetings.forEach(m => {
+    const notes = LS.raw('nana_' + m.id + '_notes', '');
+    const attendees = LS.raw('nana_' + m.id + '_attendees', '');
+    const todosArr = LS.get('nana_' + m.id + '_todos', []);
+    const done = todosArr.filter(t => t.done).length;
 
     const card = document.createElement('div');
     card.className = 'meeting-card';
     card.innerHTML = `
-      <div class="meeting-card-header">
-        <span class="meeting-date-badge"><i class="fa-regular fa-calendar"></i> ${formatDate(s.date)}</span>
-        <button class="btn btn-danger" onclick="event.stopPropagation(); deleteMeeting('${s.id}')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <h3>${s.name}</h3>
-      <p>${s.description || 'Sin descripción.'}</p>
-      <div class="meeting-card-footer">
-        <div class="meeting-meta">
-          ${todosArr.length > 0 ? `<span class="tag"><i class="fa-solid fa-list-check"></i> ${doneTodos}/${todosArr.length} tareas</span>` : ''}
-          ${attendees ? `<span class="tag"><i class="fa-solid fa-users"></i> Asistentes</span>` : ''}
-          ${notes ? `<span class="tag"><i class="fa-solid fa-scroll"></i> Acta</span>` : ''}
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge badge-date"><i class="fa-regular fa-calendar"></i> ${formatDate(m.date)}</span>
+          ${notes ? '<span class="badge badge-acta"><i class="fa-solid fa-scroll"></i> Acta</span>' : ''}
+          ${todosArr.length ? '<span class="badge badge-todo"><i class="fa-solid fa-list-check"></i> ' + done + '/' + todosArr.length + ' tareas</span>' : ''}
         </div>
-        <button class="btn btn-sm btn-primary" onclick="openMeeting('${s.id}')">Abrir <i class="fa-solid fa-arrow-right"></i></button>
+        <div class="card-title">${m.name}</div>
+        <div class="card-desc">${m.desc || 'Sin descripción.'}</div>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-sm btn-primary" onclick="openMeeting('${m.id}')"><i class="fa-solid fa-play"></i> Abrir</button>
+        <button class="btn btn-sm btn-outline" onclick="openEditModal('${m.id}')"><i class="fa-solid fa-pen"></i> Editar</button>
+        <button class="btn btn-sm btn-danger card-delete" onclick="deleteMeeting('${m.id}')"><i class="fa-solid fa-trash"></i></button>
       </div>`;
     grid.appendChild(card);
   });
 
-  // History section
-  renderActaHistory(sessions);
+  renderHistory(meetings);
 }
 
-function renderActaHistory(sessions) {
-  const section = document.getElementById('acta-history-section');
-  const list = document.getElementById('acta-history-list');
-  const withActas = sessions.filter(s => localStorage.getItem('nana_' + s.id + '_acta_notes'));
+function renderHistory(meetings) {
+  const section = document.getElementById('history-section');
+  const body = document.getElementById('history-body');
+  const withActas = meetings.filter(m => LS.raw('nana_' + m.id + '_notes', ''));
+  if (!withActas.length) { section.style.display = 'none'; return; }
+  section.style.display = '';
+  body.innerHTML = '';
 
-  if (withActas.length === 0) { section.style.display = 'none'; return; }
-  section.style.display = 'block';
-  list.innerHTML = '';
-  withActas.sort((a,b) => b.date.localeCompare(a.date)).forEach(s => {
-    const notes = localStorage.getItem('nana_' + s.id + '_acta_notes') || '';
+  withActas.forEach(m => {
+    const notes = LS.raw('nana_' + m.id + '_notes', '');
+    const attendees = LS.raw('nana_' + m.id + '_attendees', '');
+    const next = LS.raw('nana_' + m.id + '_next', '');
+    const todosArr = LS.get('nana_' + m.id + '_todos', []);
+
     const div = document.createElement('div');
-    div.className = 'acta-entry';
-    div.innerHTML = `<h4><i class="fa-regular fa-calendar"></i> ${formatDate(s.date)} — ${s.name}</h4><p>${notes}</p>`;
-    list.appendChild(div);
+    div.className = 'history-entry';
+    let html = `<div class="history-entry-title"><i class="fa-regular fa-calendar"></i> ${formatDate(m.date)} — ${m.name}</div>`;
+    if (attendees) html += `<div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem"><i class="fa-solid fa-users"></i> ${attendees}</div>`;
+    if (notes) html += `<div class="history-entry-notes">${notes}</div>`;
+    if (todosArr.length) {
+      html += `<div class="history-entry-todos"><strong style="font-size:0.82rem;color:var(--primary)">Tareas:</strong><ul>` +
+        todosArr.map(t => `<li class="${t.done?'done':''}">${t.text}</li>`).join('') + `</ul></div>`;
+    }
+    if (next) html += `<div style="font-size:0.82rem;color:var(--muted);margin-top:0.6rem"><i class="fa-solid fa-arrow-right"></i> Próxima reunión: <strong>${next}</strong></div>`;
+    div.innerHTML = html;
+    body.appendChild(div);
   });
 }
 
-function formatDate(dateStr) {
-  if (!dateStr) return 'Sin fecha';
-  const d = new Date(dateStr + 'T12:00:00');
-  return d.toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
+// ─── MODAL: Nueva / Editar ─────────────────────────
+function openNewModal() {
+  editingId = null;
+  document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-plus" style="color:var(--secondary)"></i> Nueva Reunión';
+  document.getElementById('m-name').value = '';
+  document.getElementById('m-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('m-desc').value = '';
+  document.getElementById('m-embed').value = '';
+  document.getElementById('meeting-modal').classList.add('open');
+  setTimeout(() => document.getElementById('m-name').focus(), 300);
+}
+
+function openEditModal(id) {
+  const meetings = getMeetings();
+  const m = meetings.find(x => x.id === id);
+  if (!m) return;
+  editingId = id;
+  document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-pen" style="color:var(--secondary)"></i> Editar Reunión';
+  document.getElementById('m-name').value = m.name;
+  document.getElementById('m-date').value = m.date || '';
+  document.getElementById('m-desc').value = m.desc || '';
+  document.getElementById('m-embed').value = m.embed || '';
+  document.getElementById('meeting-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('meeting-modal').classList.remove('open');
+}
+
+function saveMeeting() {
+  const name = document.getElementById('m-name').value.trim();
+  if (!name) { alert('Introduce un nombre para la reunión.'); return; }
+  const date = document.getElementById('m-date').value;
+  const desc = document.getElementById('m-desc').value.trim();
+  const embed = document.getElementById('m-embed').value.trim();
+
+  let meetings = getMeetings();
+
+  if (editingId) {
+    meetings = meetings.map(m => m.id === editingId ? { ...m, name, date, desc, embed } : m);
+    saveMeetings(meetings);
+    closeModal();
+    renderHome();
+  } else {
+    const id = 'mtg_' + Date.now();
+    meetings.push({ id, name, date, desc, embed });
+    saveMeetings(meetings);
+    closeModal();
+    openMeeting(id);
+  }
 }
 
 function deleteMeeting(id) {
   if (!confirm('¿Borrar esta reunión y todas sus notas?')) return;
-  let sessions = getSessions().filter(s => s.id !== id);
-  saveSessions(sessions);
+  saveMeetings(getMeetings().filter(m => m.id !== id));
   Object.keys(localStorage).filter(k => k.startsWith('nana_' + id)).forEach(k => localStorage.removeItem(k));
   renderHome();
 }
 
-// --- Modal ---
-function openNewMeetingModal() {
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('modal-date').value = today;
-  document.getElementById('modal-name').value = '';
-  document.getElementById('modal-desc').value = '';
-  document.getElementById('new-meeting-modal').classList.add('open');
-  setTimeout(() => document.getElementById('modal-name').focus(), 300);
-}
-function closeModal() {
-  document.getElementById('new-meeting-modal').classList.remove('open');
-}
-function createMeeting() {
-  const name = document.getElementById('modal-name').value.trim();
-  const date = document.getElementById('modal-date').value;
-  const desc = document.getElementById('modal-desc').value.trim();
-  if (!name) { alert('Introduce un nombre para la reunión.'); return; }
-  const id = 'mtg_' + Date.now();
-  const sessions = getSessions();
-  sessions.push({ id, name, date, description: desc });
-  saveSessions(sessions);
-  closeModal();
-  openMeeting(id);
-}
-
-// --- Open Meeting (Presentation) ---
+// ─── MEETING VIEW ─────────────────────────────────
 function openMeeting(id) {
+  const meetings = getMeetings();
+  const m = meetings.find(x => x.id === id);
+  if (!m) return;
+
   activeMeetingId = id;
-  const sessions = getSessions();
-  const mtg = sessions.find(s => s.id === id);
-  if (!mtg) return;
+  document.getElementById('mv-title').textContent = m.name;
+  document.getElementById('mv-date').textContent = formatDate(m.date);
 
-  // Set header info
-  document.getElementById('pres-title').textContent = mtg.name;
-  document.getElementById('pres-date').textContent = formatDate(mtg.date);
-  document.getElementById('cover-date').textContent = formatDate(mtg.date);
+  // Embed
+  const embedArea = document.getElementById('embed-area');
+  if (m.embed) {
+    embedArea.innerHTML = '<iframe src="' + m.embed + '" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
+  } else {
+    embedArea.innerHTML = `<div class="embed-placeholder">
+      <i class="fa-brands fa-google"></i>
+      <p>No hay presentación enlazada.<br><button class="btn btn-sm btn-outline" style="margin-top:1rem" onclick="goHome();setTimeout(()=>openEditModal('${id}'),100)"><i class="fa-solid fa-link"></i> Vincular Google Slides</button></p>
+    </div>`;
+  }
 
-  // Reset slide position
-  currentSlide = 0;
-  updateSlideUI();
-
-  // Load acta data
-  document.getElementById('acta-date').value = localStorage.getItem('nana_' + id + '_acta_date') || mtg.date || '';
-  document.getElementById('acta-notes').value = localStorage.getItem('nana_' + id + '_acta_notes') || '';
-  document.getElementById('acta-attendees').value = localStorage.getItem('nana_' + id + '_acta_attendees') || '';
-  todos = JSON.parse(localStorage.getItem('nana_' + id + '_todos') || '[]');
+  // Load acta
+  document.getElementById('acta-date').value = LS.raw('nana_' + id + '_date', m.date || '');
+  document.getElementById('acta-attendees').value = LS.raw('nana_' + id + '_attendees', '');
+  document.getElementById('acta-notes').value = LS.raw('nana_' + id + '_notes', '');
+  document.getElementById('acta-next').value = LS.raw('nana_' + id + '_next', '');
+  todos = LS.get('nana_' + id + '_todos', []);
   renderTodos();
 
-  // Load slide notes
-  document.querySelectorAll('.editable-note').forEach(el => {
-    const slide = el.getAttribute('data-slide');
-    el.innerHTML = localStorage.getItem('nana_' + id + '_note_s' + slide) || '';
-    el.oninput = () => {
-      localStorage.setItem('nana_' + id + '_note_s' + slide, el.innerHTML);
-    };
-  });
+  // Show acta panel
+  actaVisible = true;
+  document.getElementById('acta-panel').classList.remove('hidden');
 
-  // Open acta panel by default
-  actaPanelOpen = true;
-  document.getElementById('acta-panel').classList.remove('collapsed');
-
-  showView('presentation');
+  showView('meeting-view');
 }
 
 function goHome() {
-  showView('home');
   activeMeetingId = null;
+  showView('home');
   renderHome();
 }
 
 function showView(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => { v.classList.remove('active'); v.style.display = ''; });
   const el = document.getElementById(id);
   el.classList.add('active');
-  if (id === 'presentation') el.style.display = 'flex';
-  else el.style.display = '';
-  if (id === 'home') document.getElementById('presentation').style.display = 'none';
 }
 
-// --- Acta Panel ---
-function toggleActaPanel() {
-  actaPanelOpen = !actaPanelOpen;
-  const panel = document.getElementById('acta-panel');
-  if (actaPanelOpen) {
-    panel.classList.remove('collapsed');
-    document.getElementById('acta-btn-label').textContent = 'Acta';
-  } else {
-    panel.classList.add('collapsed');
-    document.getElementById('acta-btn-label').textContent = 'Ver Acta';
-  }
+// ─── ACTA ─────────────────────────────────────────
+function toggleActa() {
+  actaVisible = !actaVisible;
+  document.getElementById('acta-panel').classList.toggle('hidden', !actaVisible);
 }
 
-function saveActaField(field, value) {
+function saveActa(field, value) {
   if (!activeMeetingId) return;
-  localStorage.setItem('nana_' + activeMeetingId + '_acta_' + field, value);
+  LS.setRaw('nana_' + activeMeetingId + '_' + field, value);
 }
 
-// --- Slides ---
-function updateSlideUI() {
-  const slides = document.querySelectorAll('.slide');
-  slides.forEach((s, i) => {
-    s.classList.remove('active', 'previous');
-    if (i === currentSlide) s.classList.add('active');
-    else if (i < currentSlide) s.classList.add('previous');
-  });
-  document.getElementById('prev-btn').disabled = currentSlide === 0;
-  document.getElementById('next-btn').disabled = currentSlide === TOTAL_SLIDES - 1;
-  const pct = currentSlide === 0 ? 0 : (currentSlide / (TOTAL_SLIDES - 1)) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('slide-counter').textContent = 'Diapositiva ' + (currentSlide + 1) + ' de ' + TOTAL_SLIDES;
-}
-function nextSlide() { if (currentSlide < TOTAL_SLIDES - 1) { currentSlide++; updateSlideUI(); } }
-function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlideUI(); } }
-
-document.addEventListener('keydown', e => {
-  const tag = document.activeElement.tagName;
-  if (tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.hasAttribute('contenteditable')) return;
-  if (e.key === 'ArrowRight') nextSlide();
-  else if (e.key === 'ArrowLeft') prevSlide();
-});
-
-function goFullScreen() {
-  if (!document.fullscreenElement) {
-    document.getElementById('presentation').requestFullscreen().catch(() => {});
-  } else {
-    document.exitFullscreen();
-  }
-}
-
-// --- To-Do ---
+// ─── TODO ─────────────────────────────────────────
 function renderTodos() {
   const list = document.getElementById('todo-list');
   list.innerHTML = '';
   todos.forEach((t, i) => {
     const li = document.createElement('li');
     if (t.done) li.classList.add('done');
-    const cb = t.done ? 'checked' : '';
-    li.innerHTML = "<input type='checkbox' " + cb + " onchange='toggleTodo(" + i + ")'>" +
-                   "<span>" + t.text + "</span>" +
+    li.innerHTML = "<input type='checkbox' " + (t.done ? 'checked' : '') + " onchange='toggleTodo(" + i + ")'>" +
+                   "<span>" + escHtml(t.text) + "</span>" +
                    "<i class='fa-solid fa-trash todo-del' onclick='deleteTodo(" + i + ")'></i>";
     list.appendChild(li);
   });
 }
+
+function saveTodos() { LS.set('nana_' + activeMeetingId + '_todos', todos); }
+
 function addTodo() {
   const input = document.getElementById('todo-input');
   const text = input.value.trim();
   if (!text) return;
   todos.push({ text, done: false });
-  localStorage.setItem('nana_' + activeMeetingId + '_todos', JSON.stringify(todos));
-  input.value = '';
-  renderTodos();
+  saveTodos(); input.value = ''; renderTodos();
 }
-function toggleTodo(i) {
-  todos[i].done = !todos[i].done;
-  localStorage.setItem('nana_' + activeMeetingId + '_todos', JSON.stringify(todos));
-  renderTodos();
-}
-function deleteTodo(i) {
-  todos.splice(i, 1);
-  localStorage.setItem('nana_' + activeMeetingId + '_todos', JSON.stringify(todos));
-  renderTodos();
+function toggleTodo(i) { todos[i].done = !todos[i].done; saveTodos(); renderTodos(); }
+function deleteTodo(i) { todos.splice(i, 1); saveTodos(); renderTodos(); }
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// --- Init ---
-window.addEventListener('DOMContentLoaded', () => {
-  renderHome();
-  document.getElementById('presentation').style.display = 'none';
+// ─── EXPORT ───────────────────────────────────────
+function buildActaText() {
+  const meetings = getMeetings();
+  const m = meetings.find(x => x.id === activeMeetingId) || {};
+  const date = LS.raw('nana_' + activeMeetingId + '_date', m.date || '');
+  const attendees = LS.raw('nana_' + activeMeetingId + '_attendees', '');
+  const notes = LS.raw('nana_' + activeMeetingId + '_notes', '');
+  const next = LS.raw('nana_' + activeMeetingId + '_next', '');
+  const todosArr = LS.get('nana_' + activeMeetingId + '_todos', []);
+
+  let text = '═══════════════════════════════════════\n';
+  text += '  ACTA DE REUNIÓN — JUNTA N.A.N.A.\n';
+  text += '═══════════════════════════════════════\n\n';
+  text += 'Reunión:   ' + (m.name || '') + '\n';
+  text += 'Fecha:     ' + formatDate(date) + '\n';
+  if (attendees) text += 'Asistentes:\n' + attendees + '\n';
+  text += '\n───────────────────────────────────────\n';
+  text += '  APUNTES Y DECISIONES\n';
+  text += '───────────────────────────────────────\n';
+  text += (notes || '(Sin apuntes registrados)') + '\n';
+
+  if (todosArr.length) {
+    text += '\n───────────────────────────────────────\n';
+    text += '  TAREAS (TO-DO)\n';
+    text += '───────────────────────────────────────\n';
+    todosArr.forEach(t => { text += (t.done ? '[✓] ' : '[ ] ') + t.text + '\n'; });
+  }
+
+  if (next) {
+    text += '\n───────────────────────────────────────\n';
+    text += '  PRÓXIMA REUNIÓN\n';
+    text += '───────────────────────────────────────\n';
+    text += next + '\n';
+  }
+
+  text += '\n═══════════════════════════════════════\n';
+  return text;
+}
+
+function openExportModal() {
+  document.getElementById('export-content').textContent = buildActaText();
+  document.getElementById('export-modal').classList.add('open');
+}
+function closeExport() { document.getElementById('export-modal').classList.remove('open'); }
+
+function copyActa() {
+  const text = document.getElementById('export-content').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('¡Acta copiada al portapapeles! Puedes pegarla en un correo o documento.');
+  }).catch(() => {
+    alert('Selecciona el texto del acta manualmente y cópialo con Ctrl+C.');
+  });
+}
+
+function printActa() {
+  const text = buildActaText();
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>Acta N.A.N.A.</title>
+    <style>body{font-family:monospace;padding:3rem;font-size:14px;line-height:1.7;color:#2c3e50}pre{white-space:pre-wrap}</style>
+    </head><body><pre>${text}</pre></body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 500);
+}
+
+function toggleFullscreen() {
+  const el = document.getElementById('meeting-view');
+  if (!document.fullscreenElement) el.requestFullscreen().catch(() => {});
+  else document.exitFullscreen();
+}
+
+// ─── KEYBOARD ────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal(); closeExport();
+  }
 });
+
+document.getElementById('meeting-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.getElementById('export-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeExport(); });
+
+// ─── INIT ─────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', renderHome);
 </script>
 </body>
 </html>
